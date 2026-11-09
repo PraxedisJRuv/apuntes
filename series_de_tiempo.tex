@@ -1,0 +1,389 @@
+%% ============================================================
+%%  PLANTILLA DE APUNTES DE MATEMÁTICA
+%%  Compilar con:  pdflatex plantilla_apuntes.tex   (2 veces)
+%%  Para el índice analítico: makeindex plantilla_apuntes
+%%  y luego pdflatex otra vez. (Con --shell-escape se hace solo.)
+%% ============================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+%% ---------- Idioma y codificación ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+
+%% ---------- Página y párrafos ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}            % separación entre párrafos sin sangría
+\usepackage{setspace}
+\setstretch{1.1}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---------- Matemática ----------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+%% ---------- Figuras, tablas, colores ----------
+\usepackage{graphicx}
+\graphicspath{{figuras/}}       % pon tus imágenes en la carpeta "figuras"
+\usepackage{xcolor}
+\usepackage{booktabs}           % tablas bonitas (\toprule, \midrule)
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{float}              % permite [H] para fijar posición
+\usepackage{mwe}                % solo para imágenes de ejemplo; bórralo luego
+\usepackage{tikz}
+
+%% ---------- Código ----------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!40!black}\itshape,
+  stringstyle=\color{orange!80!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  backgroundcolor=\color{gray!8},
+  frame=single, rulecolor=\color{gray!40},
+  breaklines=true, showstringspaces=false, tabsize=4,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+}
+
+%% ---------- Índices ----------
+\usepackage{imakeidx}
+\makeindex[title=Índice analítico, intoc]
+
+%% ---------- Cajas de colores ----------
+\usepackage[most]{tcolorbox}
+
+%% ---------- Hipervínculos y referencias (SIEMPRE al final) ----------
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,
+            urlcolor=blue!60!black]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+
+%% ============================================================
+%%  ENTORNOS: definición, teorema, demostración, notas...
+%%  Todos comparten UN solo contador, dentro de cada capítulo.
+%% ============================================================
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[chapter]
+\newtheorem{ejemplo}[definicion]{Ejemplo}
+\newtheorem{ejercicio}[definicion]{Ejercicio}
+
+\theoremstyle{plain}
+\newtheorem{teorema}[definicion]{Teorema}
+\newtheorem{proposicion}[definicion]{Proposición}
+\newtheorem{lema}[definicion]{Lema}
+\newtheorem{corolario}[definicion]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem*{observacion}{Observación}
+\newtheorem*{notademo}{Nota sobre la demostración}
+\newtheorem*{idea}{Idea clave}
+
+\renewcommand{\proofname}{Demostración}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Nombres para cleveref
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{ejemplo}{ejemplo}{ejemplos}
+\Crefname{ejemplo}{Ejemplo}{Ejemplos}
+\crefname{ejercicio}{ejercicio}{ejercicios}
+\Crefname{ejercicio}{Ejercicio}{Ejercicios}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{chapter}{capítulo}{capítulos}
+\Crefname{chapter}{Capítulo}{Capítulos}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+
+% Estilo visual: barra lateral de color + fondo suave
+\tcbset{
+  cajabase/.style={enhanced, breakable, sharp corners, boxrule=0pt,
+    frame hidden, left=8pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=10pt, after skip=10pt}
+}
+\tcolorboxenvironment{definicion}{cajabase,
+  colback=blue!6,   borderline west={3pt}{0pt}{blue!65!black}}
+\tcolorboxenvironment{teorema}{cajabase,
+  colback=red!6,    borderline west={3pt}{0pt}{red!70!black}}
+\tcolorboxenvironment{proposicion}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{lema}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{corolario}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{ejemplo}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{ejercicio}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{notademo}{cajabase,
+  colback=yellow!14, borderline west={3pt}{0pt}{yellow!60!black}}
+\tcolorboxenvironment{observacion}{cajabase,
+  colback=gray!10,  borderline west={3pt}{0pt}{gray!70}}
+\tcolorboxenvironment{idea}{cajabase,
+  colback=purple!6, borderline west={3pt}{0pt}{purple!70}}
+
+%% ============================================================
+%%  ATAJOS MATEMÁTICOS
+%% ============================================================
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dpar}[2]{\frac{\partial #1}{\partial #2}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\pesc}{\langle}{\rangle}
+\DeclarePairedDelimiter{\conj}{\{}{\}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\Img}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\rg}{rg}
+
+% Atajo para "término indexado": lo escribe en el texto Y lo añade al índice
+\newcommand{\termino}[1]{\textbf{#1}\index{#1}}
+
+%% ============================================================
+%%  PORTADA
+%% ============================================================
+\title{Apuntes de series de tiempo}
+\author{Práxedis Jiménez Ruvalcaba}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+%% ============================================================
+\part{Series de Tiempo (Shumway, Stoffer)}
+%% ============================================================
+
+\chapter{Introducción}
+
+\section{Características de una serie de tiempo}
+
+Estos apuntes no son de un curso que se haya tomado de manera formal, sino que
+mayormente apuntes autodidáctas del libro Time Series and Its Applications: With R Examples, 
+de Shumway y Stoffer.\\
+La necesidad de las series de tiempo viene de que contiene datos que incumplen la
+"estacionariedad", de la estadística usual, es decir, los datos dependen del momento en 
+tiempo en el que fueron tomados, más aún, los datos normalmente pertenecen a una dupla
+$(valor,tiempo)$  ímplicita. Resultando en que tengan una autocorrelación, incumpliendo también las 
+hipótesis de independencia e idénticamente distribuidas. El acercamiento sistémico a la
+solución de estos problemas son las series de tiempo.
+\begin{definicion}[Límite de una sucesión]\label{def:limite}
+  Sea $(a_n)_{n\in\N}\subset\R$. Decimos que $a_n$ \termino{converge} a
+  $L\in\R$ si
+  \[
+    \forall \eps>0\;\exists N\in\N\;\text{tal que}\;
+    n\ge N \implies \abs{a_n-L}<\eps .
+  \]
+\end{definicion}
+
+\begin{teorema}[Unicidad del límite]\label{thm:unicidad}
+  Si una sucesión converge, su límite es único.
+\end{teorema}
+
+\begin{notademo}
+  La idea es suponer dos límites distintos y usar la desigualdad triangular
+  con $\eps = \abs{L-L'}/2$ para llegar a una contradicción.
+  Esta técnica se reutiliza en el \cref{cor:sumas}.
+\end{notademo}
+
+\begin{proof}
+  Sean $L\neq L'$ dos límites de $(a_n)$ y tomemos $\eps=\tfrac{1}{2}\abs{L-L'}>0$.
+  Por la \cref{def:limite}, existen $N_1,N_2$ tales que
+  $\abs{a_n-L}<\eps$ si $n\ge N_1$ y $\abs{a_n-L'}<\eps$ si $n\ge N_2$.
+  Para $n\ge\max\{N_1,N_2\}$:
+  \begin{align}
+    \abs{L-L'} &\le \abs{L-a_n}+\abs{a_n-L'} \label{eq:triangular}\\
+               &< 2\eps = \abs{L-L'},
+  \end{align}
+  lo cual es absurdo.
+\end{proof}
+
+\begin{corolario}\label{cor:sumas}
+  Si $a_n\to L$ y $b_n\to M$, entonces $a_n+b_n\to L+M$.
+\end{corolario}
+
+\begin{observacion}
+  La desigualdad \eqref{eq:triangular} también aparece en la prueba del
+  \cref{thm:unicidad}. Referencias automáticas: \cref{def:limite},
+  \cref{thm:unicidad}, \cref{cor:sumas}; en el PDF cada una es un enlace
+  clicable. Con \verb|\Cref| se escribe con mayúscula inicial al comienzo
+  de frase, y con \verb|\cpageref| podrías citar la página.
+\end{observacion}
+
+\begin{ejemplo}
+  La sucesión $a_n=1/n$ converge a $0$: dado $\eps>0$ basta tomar
+  $N>1/\eps$.
+\end{ejemplo}
+
+\section{Código}
+
+\begin{lstlisting}[language=Python, caption={Primeros términos de $1/n$}]
+# Calcula los primeros términos de la sucesión
+for n in range(1, 6):
+    print(n, 1 / n)
+\end{lstlisting}
+
+En línea: la función \lstinline[language=Python]|math.sqrt(2)| devuelve $\sqrt2$.
+Para código desde un archivo externo:
+\verb|\lstinputlisting[language=Python]{codigo/ejemplo.py}|.
+
+\section{Tablas}
+
+\subsection{Tabla horizontal (encabezado en la primera fila)}
+
+\begin{table}[H]
+  \centering
+  \caption{Valores de $f(x)=x^2$.}
+  \label{tab:horizontal}
+  \begin{tabular}{@{}lccccc@{}}
+    \toprule
+    $x$    & $-2$ & $-1$ & $0$ & $1$ & $2$ \\
+    \midrule
+    $f(x)$ & $4$  & $1$  & $0$ & $1$ & $4$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Tabla vertical (encabezado en la primera columna)}
+
+\begin{table}[H]
+  \centering
+  \caption{Propiedades de los conjuntos numéricos.}
+  \label{tab:vertical}
+  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}@{}}
+    \toprule
+    \textbf{Propiedad} & $\Q$ & $\R$ & $\C$ \\
+    \midrule
+    Cuerpo           & Sí & Sí & Sí \\
+    Ordenado         & Sí & Sí & No \\
+    Completo         & No & Sí & Sí \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Tabla con texto largo que se ajusta al ancho (\verb|tabularx|):
+
+\begin{table}[H]
+  \centering
+  \begin{tabularx}{\textwidth}{@{}lX@{}}
+    \toprule
+    \textbf{Concepto} & \textbf{Descripción} \\
+    \midrule
+    Cota superior & Número mayor o igual que todos los elementos del conjunto,
+                    que puede o no pertenecer a él. \\
+    Supremo       & La menor de las cotas superiores. \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
+
+Las referencias funcionan igual: ver \cref{tab:horizontal} y \cref{tab:vertical}.
+Para tablas muy largas que cruzan páginas usa \verb|longtable|.
+
+\section{Imágenes}
+
+\begin{figure}[H]
+  \centering
+  % Reemplaza example-image-a por tu archivo, p. ej. grafico.png
+  % (colócalo en la carpeta "figuras")
+  \includegraphics[width=0.45\textwidth]{example-image-a}
+  \caption{Pie de figura.}
+  \label{fig:ejemplo}
+\end{figure}
+
+\Cref{fig:ejemplo} muestra una imagen. También puedes dibujar con TikZ:
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.2]
+    \draw[->] (-0.3,0) -- (3,0) node[right] {$x$};
+    \draw[->] (0,-0.3) -- (0,2.5) node[above] {$y$};
+    \draw[domain=0:1.55, smooth, thick, blue] plot (\x, {\x*\x});
+  \end{tikzpicture}
+  \caption{Gráfico de $y=x^2$ dibujado con TikZ.}
+  \label{fig:tikz}
+\end{figure}
+
+%% ------------------------------------------------------------
+\chapter{Segundo tema del curso}
+
+\begin{teorema}[Ejemplo de cita cruzada]\label{thm:cruzado}
+  Usando el \cref{thm:unicidad} del \cref{chap:limites-ref}... (cita a otro
+  capítulo con \verb|\cref{chap:...}| tras poner un \verb|\label| en él).
+\end{teorema}
+
+\chapter{Tema con etiqueta}\label{chap:limites-ref}
+
+Texto del capítulo referenciado arriba. Recuerda: ejecuta \texttt{pdflatex}
+dos veces para que las referencias se resuelvan.
+
+%% ============================================================
+\part{Nombre del segundo curso (p.\,ej. Álgebra Lineal)}
+%% ============================================================
+
+\chapter{Espacios vectoriales}
+
+\begin{definicion}[Espacio vectorial]\label{def:ev}
+  Un \termino{espacio vectorial} sobre un cuerpo $\mathbb{K}$ es un conjunto $V$
+  con operaciones suma y producto por escalares que cumplen los axiomas usuales.
+\end{definicion}
+
+\begin{teorema}[Teorema de la dimensión]\label{thm:dim}
+  Sea $T:V\to W$ lineal con $\dim V<\infty$. Entonces
+  \[
+    \dim V = \dim\Ker T + \dim\Img T .
+  \]
+\end{teorema}
+
+\begin{proof}
+  Sea $\{u_1,\dots,u_k\}$ una base de $\Ker T$, que se extiende a una base
+  $\{u_1,\dots,u_k,v_1,\dots,v_m\}$ de $V$. Se prueba que
+  $\{Tv_1,\dots,Tv_m\}$ es base de $\Img T$.
+\end{proof}
+
+\begin{idea}
+  Extender una base del núcleo a una base de todo el espacio.
+\end{idea}
+
+Se usa el \cref{thm:dim} junto con la \cref{def:ev}. Recuerda además que la
+matriz $A=\begin{pmatrix} 1 & 2\\ 3 & 4\end{pmatrix}$ tiene $\rg A=2$.
+
+%% ============================================================
+%%  ÍNDICE ANALÍTICO
+%% ============================================================
+\printindex
+
+\end{document}
