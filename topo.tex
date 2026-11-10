@@ -498,7 +498,119 @@ $\therefore \pi_1(Y_n, y_{n,0}) \cong \Z^n$ $\forall n \in \N \blacksquare$
 \end{ejercicio}
 La concatenación de caminos ya se probó en clase que es asociativa, por lo que en este caso solo hay que revisar 
 la identidad para probar que $C$ es en efecto, una categoría.\\
+Como $obC=X \Rightarrow \forall p \in X$ $I_p \in Hom(p,q)$ es la identidad de $p$ que sería $I_p=[e_p]$ con 
+$ep:[0,1] \rightarrow X$ tal que $e_p(t)=p \forall t \in [0,1]$. Así que dado $[f]\in Hom(p,q)$ tenemos que 
+$I_p*[f]=[f]$ y $[f]*I_q=[f]$ que por parcial 2 sabemos que esto significa que $e_p*f\simeq f$ y $f*e_q\simeq f$. 
+Por ello se propone $N_i:IxI\rightarrow X$ donde:\\
+$N_i(s,t) = \left\{
+  \begin{array}{l}
+    p \quad 0\leq s \leq t/2 \\
+    f(\frac{2s-t}{2-t}) \quad t/2 \leq s \leq 1 \\
+    f(\frac{2(t/2)-t}{2-t})=f(0)=p
+  \end{array}
+  t \in [0,1]
+\right.$\\
 
+$N_i(s,0) = \left\{
+  \begin{array}{l}
+    p=f(s) \quad 0\leq s \leq 0  \\
+    f(s) \quad 0 \leq s \leq 1 
+  \end{array}
+\right.$\\
+
+Que cabe remarcar, son continuas por pasting lemma, ya que $p$ es constnte y $f$ inicia en p, cuando $f$ es camino 
+y por tanto, continua.
+
+$N_i(s,1) = \left\{
+  \begin{array}{l}
+    p \quad 0\leq s \leq 1/2  \\
+    f(\frac{2s-1}{2-1}) \quad 1/2 \leq s \leq 1 
+  \end{array}
+\right.$\\
+
+Entonces $N_i(s,1)= I_p*f(s)$, así que $N_i$ va de $f$ a $I_p*f(s)$ y $N_i(0,t)=p$ por $s=0$. Mientras que $N_i(1,t)=f(\frac{2-t}{2-t})=q$\\
+$\therefore$ Los extremos $p$ y $q$ se mantienen\\
+$\therefore N_i$ es homotopía tal que $f\simeq e_p*f$. \\
+De manera análoga establecemos $N_d:[IxI]\rightarrow X$
+como:\\
+
+$N_d(s,t) = \left\{
+  \begin{array}{l}
+    f(\frac{2s}{2-t}) \quad 0\leq s \leq 1- t/2 \\
+    q \quad 1-t/2 \leq s \leq 1 \\
+    f(\frac{2(1-t/2)-t}{2-t})=f(1)=q
+  \end{array}
+\right.$\\
+$N_d(0,t)=f(0)=p$\\
+$N_d(1,t)=q$\\
+
+$N_d(s,0) = \left\{
+  \begin{array}{l}
+    f(s) \quad 0\leq s \leq 1  \\
+    q \quad 1 
+  \end{array}
+\right.$\\
+
+$N_i(s,1) = \left\{
+  \begin{array}{l}
+    f(s) \quad 0\leq s \leq 0  \\
+    q \quad 1/2 \leq s \leq 1 
+  \end{array}
+\right.$\\
+Y por los argumentos del punto anterior tendríamos que $N_d$ es una homotopía tal que $f(s)*e_q\simeq f(s)$\\
+$\therefore I_p$ e $I_q$ son los neutros de los morfismos.\\
+$\therefore C$ es una categoría.\\
+Ahora para revisar que todo morfismo en $C$ es una equivalencia, debemos hallar los inversos $\forall [f] \in Hom$.
+Así que tomemos $[f \in Hom(p,q)]$\\
+Deberíamos proceder de manera similar, hallando las homotpías para poder probar que $[f]*[f^{-1}]=I_p$ y $[f^{-1}]*[f]=I_q$\\
+Sea $f\in[f]\Rightarrow f:I\rightarrow X$ es camino continuo tal que $f(0)=p$ y $f(1)=q$; $f^{-1}:I\rightarrow X$ lo
+definimos como $f(1-t)$ la cual es continua al ser una reparametrización con mismo dominio y además $\alpha(f^{-1})=q$
+y $w(f^{-1})=p$ entonces, $[f^{-1}]\in HOm(q,p)$. \\
+Ahora definimos:\\
+$H(s,t) = \left\{
+  \begin{array}{l}
+    f(2s(1-t)) \quad 0\leq s \leq 1/2  \\
+    f(2(1-t)(1-s)) \quad 1/2 \leq s \leq 1 
+  \end{array}
+  t \in [0,1]
+\right.$\\
+donde nuevamente $H$ es continua por pasting lema y porque ambas reparametrizaciones se mantienen continuas. Notése 
+que ambas son $f(1-t)$ en $s=1/2$. Veamos que\\
+
+$H(s,0) = \left\{
+  \begin{array}{l}
+    f(2s) \quad 0\leq s \leq 1/2  \\
+    f(2(1-s)) \quad 1/2 \leq s \leq 1 
+  \end{array}
+  (f*f^{-1})(s)
+\right.$\\
+
+$H(s,1) = \left\{
+  \begin{array}{l}
+    f(0) \quad 0\leq s \leq 1/2  \\
+    f(0) \quad 1/2 \leq s \leq 1 
+  \end{array}
+  e_p(s)
+\right.$\\
+
+Así que $H$ va de $(f*f^{-1})(s)$ a $e_p(s)$ de manera continua y 
+$H(0,t)=f(0)=p=f^{-1}(1)$ y $H(1,t)=f(0)$. Así que $\forall t\in [0,1]$ se mantienen los extremos fijos.\\
+$\therefore H$ es una homotopía tal que $(f*f^{-1})(s)\simeq e_p(s)$\\
+$\therefore[f]*[f^{-1}]=I_p$\\
+De manera análoga podríamos revisar que \\
+$G(s,t) = \left\{
+  \begin{array}{l}
+    f(1-2s(1-t)) \quad 0\leq s \leq 1/2  \\
+    f(1-2(1-t)(1-s)) \quad 1/2 \leq s \leq 1 
+  \end{array}
+  t \in [0,1]
+\right.$\\
+
+Nos da la homotopía $f^{-1}*f\simeq e_q$. Observando que en $s=1/2$ $f(1-(1-t))=f(t)=f(1-2(1/2)(1-t))$, tendríamos 
+que aplica el pasting lema para continuidad y que $G(0,t)=G(1,t)=f(1)=q$, $G(s,0)=(f^{-1}*f)(s)$ y $G(s,1)=e_q(s)$.\\
+$\therefore f^{-1}*f \simeq e_q$\\
+Así que $[f^{-1}]*[f]=I_q$ \\
+$\therefore$ Como todo morfismo posee un inverso, $C$ es una equivalencia $\blacksquare$.
 \begin{ejercicio}
   Demuestre que si existe algún espacio topológico puntuado $(Y,Y_0)$ que cumple con que $\pi_1(Y,Y_0)\not\cong \conj{e_Y}$
   $\Rightarrow \pi_1(S',1) \not\cong \conj{e_{S'}}$
