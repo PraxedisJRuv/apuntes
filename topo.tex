@@ -408,7 +408,7 @@ Donde $(f_0(t),g_0(t))=(f_0,g_0)$ y $(f_0(t),g_0(t))=(f_0,g_0)$ rel $\dot{I} \bl
   sobre $\R^2$. Demuestre que $\pi (X,x_0)$ es isomorfo al grupo trivial para cada $x_0 \in X$
 \end{ejercicio}
 
-De topología 1 sabemos que $\bar{S}=S \Cup (\conj{0},[-1,1])$. Denotemos entonces $L=(\conj{0},[-1,1])$ y veamos
+De topología 1 sabemos que $\bar{S}=S \cup (\conj{0},[-1,1])$. Denotemos entonces $L=(\conj{0},[-1,1])$ y veamos
 que si $(0,y) \in L \Rightarrow \exists \theta_0$ tal que $\sen(\theta_0)=y$\\
 Si $x_n=\frac{1}{\theta_0 +2n\pi}$ con $n\in\N$\\
 $\Rightarrow x_n \in (0,1]$ y $\lim_{n\rightarrow \infty} x_n=0$\\
@@ -459,8 +459,65 @@ contenida en una única componente por camino. Así que tenemos dos caos $x_0 \i
 $\pi_1(\bar{S},x_0)\cong \pi_1(S,x_0)$ o $\pi_1(\bar{S},x_0)\cong \pi_1(L,x_0)$, dependiendo de si $x_0 \in S$ o 
 dónde esté por el teorema 3.31. \\
 Como $S$ es contráctil, por teorema 3.35.2 podemos argumentar que $\pi_1(S,x_0)\cong \conj{e}$ si $x_0 \in L$.
-De manera análoga $\pi_1(L,x_0)\cong {e}$.\\
+De manera análoga $\pi_1(L,x_0)\cong \conj{e}$.\\
 $\therefore \forall x_0 \in \bar{S}$ $\pi_1(\bar{S},x_0)\cong \conj{e} \blacksquare$
+
+\begin{ejercicio}
+  Suponga que exitse un espacio topológico puntuado $(X,x_0)$, tal que $\pi_1 (X,x_0) \cong \Z$. Demuestre que para cada $n \in \Z$
+  existe espacio topológico puntuado $(X_n, y_{n,0})$ tal que $\pi_1(Y_n, y_{n,0}) \cong \Z^n$
+\end{ejercicio}
+
+Por teorema 3.33 sabemos que dados $(X,x_0)$, $(Y,y_0)$ $\Rightarrow \pi_1(X \times Y,(x_0,y_0)) \cong \pi_1(X,x_0) \times \pi_1(Y,y_0)$\\
+Sea $Y_n= X\times X \times ... \times X$ ($n$ productos de $X$), con $y_{(n,0)}=(x_0,...,x_0)$ ($n$-tupla de $x_0$). Entonces, \\
+$\pi_1(Y_n,y_{(n,0)})=\pi_1(X\times X \times ... \times X,(x_0,...,x_0))$\\
+$\cong \pi(X,x_0) \times\pi(X,x_0) \times... \times \pi(X,x_0)$\\
+$\cong \Z \times \Z \times ... \times \Z$\\
+$\cong \Z^n$ \\
+Revisemos entonces por inducción que $\pi_1(Y_n, y_{n,0}) \cong \Z^n$ es una proposición válida. Notemos que el 
+caso donde $n=1$ es la hipótesis del enunciado del problema. $n=2$ Está dado por el teorema 3.33 directamente, pues 
+$\pi_1(X \times X, (x_0, x_0))\cong \pi_1 (X,x_0)\times  \pi_1 (X,x_0)\cong \Z \times \Z \cong \Z ^n$.\\
+Supongamos que la proposición es válido para un valor admisible de la variable, digamos $k$\\
+Hipótesis de inducción: $\pi_1(Y_k,y_{(k,0)})=\pi_1(X\times ... \times X,(x_0,...,x_0)) \cong \Z^k$.\\
+Verifiquemos si la proposición es válida para el siguiente valor admisible, es decir, $k+1$\\
+$Y_{k+1}=Y_k \times X$ $\Rightarrow \pi_1(Y_{k+1},y_{(k+1,0)})=\pi_1(Y_k\times X, (y_{(k,0)},x_0))$ que por teorema 3.33
+$pi_1(Y_k\times X, (y_{(k,0)},x_0))\cong \pi_1(Y_k,y_{(k,0)}) \times \pi_1(X,x_0)$\\
+$\cong \Z^k \times \Z$\\
+$\cong \Z^{k+1}$\\
+$\therefore \pi_1(Y_{k+1},y_{(k+1,0)})\cong \Z^{k+1}$\\
+$\therefore$ La proposición es válida $\forall n \in \N$
+$\therefore \pi_1(Y_n, y_{n,0}) \cong \Z^n$ $\forall n \in \N \blacksquare$
+
+\begin{ejercicio}
+  Sea $X$ un espacio topológica. Muestre que existe una categorí cuyos objetos son los elementos de $X$, sus morfismos son: \\
+  $Hom(p,q)=\conj{[f] clase de caminos | \alpha [f]=p, \omega[f]=q}$\\ 
+  y la composición \\
+  $Hom(p,q)\times Hom(q,r) \rightarrow Hom(p,r)$\\
+  definido por\\
+  $([f],[g])\rightarrow [f*g]$\\
+  Muestre que todo morfismo $C$ es una equivalencia.
+\end{ejercicio}
+La concatenación de caminos ya se probó en clase que es asociativa, por lo que en este caso solo hay que revisar 
+la identidad para probar que $C$ es en efecto, una categoría.\\
+
+\begin{ejercicio}
+  Demuestre que si existe algún espacio topológico puntuado $(Y,Y_0)$ que cumple con que $\pi_1(Y,Y_0)\not\cong \conj{e_Y}$
+  $\Rightarrow \pi_1(S',1) \not\cong \conj{e_{S'}}$
+\end{ejercicio}
+Durante la demostración del teorema 3.30 vimos que si tomamos $h:(X,X_0) \rightarrow (Y,Y_0)$ continua, entonces 
+$\pi_1(h)$ es un homomorfismo tal que $\pi_1(X,X_0)\rightarrow \pi_1(Y, Y_0)$ donde $h([\gamma])=[h\circ \gamma]$
+con $[\gamma] \in \pi_1 (X,X_0)$. \\
+Si tomamos $\alpha : [0,1]\rightarrow Y$ camino cerrado tal que $\alpha(0)=\alpha(1)=Y_0$. Y notamos que $S'$ es 
+en realidad un cociente del [0,1] identificando el 0 con el 1, entonces $q(t)=(\cos(2\pi t), \sen(2 \pi t))$ es
+un mapeo natural que va de $q:[0,1]\rightarrow S' \cong [0,1]/\conj{0,1}$, con esto retomamos el teorema 1.11 
+donde $g:S'\rightarrow Y$ es continua $\iff \alpha = g \circ q$ es continua, y como es un camino cerrado tenemos
+entonces que $g$ es continua.\\
+Si $\alpha \cong Y_0$ por teorema 2.31, $g \cong Y_0$ y entonces tendríamos una biyección entre $\alpha$ y $g$. 
+Si suponemos que $\pi_1(S',1) \cong \conj{e_{S'}}$, por hipótesis $\pi_1(Y,Y_0)\not\cong \conj{e_Y}$, así que
+existe $[\alpha]in \pi_1(Y,Y_0)$ tal que $[\alpha]\not =I_Y$. Pero por continuidad de $g$, $\pi_1(g)$ es homomorfismo. 
+Que si lo evalúamos en $q$, entonces $\pi_1(g)([q])=[g \circ q]=[\alpha]$, pero como supusimos que 
+$\pi_1(S',1)\cong \conj{e_{S'}}$ y $\pi_1(g)$ es homomorfismo, entonces $\pi_1(g)([q])=\conj{e_Y}=I_Y$, entonces
+$[\alpha]=I_Y$ lo cual es una contradicción.
+$\therefore \pi_1(S', Y_0) \not \cong \conj{e_{S'}}$
 %% ============================================================
 %%  ÍNDICE ANALÍTICO
 %% ============================================================
