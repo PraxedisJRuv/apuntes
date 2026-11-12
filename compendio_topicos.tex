@@ -1,0 +1,227 @@
+%% ============================================================
+%%  PLANTILLA DE APUNTES DE MATEMÁTICA
+%%  Compilar con:  pdflatex plantilla_apuntes.tex   (2 veces)
+%%  Para el índice analítico: makeindex plantilla_apuntes
+%%  y luego pdflatex otra vez. (Con --shell-escape se hace solo.)
+%% ============================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+%% ---------- Idioma y codificación ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+
+%% ---------- Página y párrafos ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}            % separación entre párrafos sin sangría
+\usepackage{setspace}
+\setstretch{1.1}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---------- Matemática ----------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+%% ---------- Figuras, tablas, colores ----------
+\usepackage{graphicx}
+\graphicspath{{figuras/}}       % pon tus imágenes en la carpeta "figuras"
+\usepackage{xcolor}
+\usepackage{booktabs}           % tablas bonitas (\toprule, \midrule)
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{float}              % permite [H] para fijar posición
+\usepackage{mwe}                % solo para imágenes de ejemplo; bórralo luego
+\usepackage{tikz}
+
+%% ---------- Código ----------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!40!black}\itshape,
+  stringstyle=\color{orange!80!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  backgroundcolor=\color{gray!8},
+  frame=single, rulecolor=\color{gray!40},
+  breaklines=true, showstringspaces=false, tabsize=4,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+}
+
+%% ---------- Índices ----------
+\usepackage{imakeidx}
+\makeindex[title=Índice analítico, intoc]
+
+%% ---------- Cajas de colores ----------
+\usepackage[most]{tcolorbox}
+
+%% ---------- Hipervínculos y referencias (SIEMPRE al final) ----------
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,
+            urlcolor=blue!60!black]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+
+%% ============================================================
+%%  ENTORNOS: definición, teorema, demostración, notas...
+%%  Todos comparten UN solo contador, dentro de cada capítulo.
+%% ============================================================
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[chapter]
+\newtheorem{ejemplo}[definicion]{Ejemplo}
+\newtheorem{ejercicio}[definicion]{Ejercicio}
+
+\theoremstyle{plain}
+\newtheorem{teorema}[definicion]{Teorema}
+\newtheorem{proposicion}[definicion]{Proposición}
+\newtheorem{lema}[definicion]{Lema}
+\newtheorem{corolario}[definicion]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem*{observacion}{Observación}
+\newtheorem*{notademo}{Nota sobre la demostración}
+\newtheorem*{idea}{Idea clave}
+
+\renewcommand{\proofname}{Demostración}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Nombres para cleveref
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{ejemplo}{ejemplo}{ejemplos}
+\Crefname{ejemplo}{Ejemplo}{Ejemplos}
+\crefname{ejercicio}{ejercicio}{ejercicios}
+\Crefname{ejercicio}{Ejercicio}{Ejercicios}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{chapter}{capítulo}{capítulos}
+\Crefname{chapter}{Capítulo}{Capítulos}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+
+% Estilo visual: barra lateral de color + fondo suave
+\tcbset{
+  cajabase/.style={enhanced, breakable, sharp corners, boxrule=0pt,
+    frame hidden, left=8pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=10pt, after skip=10pt}
+}
+\tcolorboxenvironment{definicion}{cajabase,
+  colback=blue!6,   borderline west={3pt}{0pt}{blue!65!black}}
+\tcolorboxenvironment{teorema}{cajabase,
+  colback=red!6,    borderline west={3pt}{0pt}{red!70!black}}
+\tcolorboxenvironment{proposicion}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{lema}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{corolario}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{ejemplo}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{ejercicio}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{notademo}{cajabase,
+  colback=yellow!14, borderline west={3pt}{0pt}{yellow!60!black}}
+\tcolorboxenvironment{observacion}{cajabase,
+  colback=gray!10,  borderline west={3pt}{0pt}{gray!70}}
+\tcolorboxenvironment{idea}{cajabase,
+  colback=purple!6, borderline west={3pt}{0pt}{purple!70}}
+
+%% ============================================================
+%%  ATAJOS MATEMÁTICOS
+%% ============================================================
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dpar}[2]{\frac{\partial #1}{\partial #2}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\pesc}{\langle}{\rangle}
+\DeclarePairedDelimiter{\conj}{\{}{\}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\Img}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\rg}{rg}
+
+% Atajo para "término indexado": lo escribe en el texto Y lo añade al índice
+\newcommand{\termino}[1]{\textbf{#1}\index{#1}}
+
+%% ============================================================
+%%  PORTADA
+%% ============================================================
+\title{Apuntes de variados tópicos de Matemática}
+\author{Práxedis Jiménez Ruvalcaba}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+%% ============================================================
+\part{Cálculo fraccional}
+%% ============================================================
+
+\chapter{Introducción}
+
+\section{Primeros conceptos}
+
+Se realizaron apuntes de cálculo fraccionario con el fin de entenderlo mejor, por 
+una pregunta en un trabajo de investigación en el que se vió se resolvió con esta particular rama.
+No llevé en realidad ningún curso d esto durante la facultad, hubieron algunas menciones y notas
+en clases de análisis y topología, así como en conversaciones de pasillos con compañeros de la licenciatura
+en física. Esto fue solo un poco más formal.\\
+El interés del cálculo fraccionario es la propiedad de no-localidad a diferencia de del cálculo entero,
+donde está propiedad está dada por cualesquier vecindad alrededor del punto. \\
+El cálculo fraccionario se fundamenta en la generalización de $n!$ donde $n\in \N$ a uno donde $n\in\R$,
+dando origen a la función $gamma$
+\[\Gamma(z)=\int_{0}^{\infty} e^{-t}t^{z-1}dt \] 
+Se puede hacer un montón con esto, mucho más que el mero cálculo fraccionario.\\
+
+\section{Riemann-Liouville vs Caputo}
+Existen varios enfoques para abordar el cálculo fraccionar. A lo que entiendo, algo similar a cómo hay variedad de enfoques
+en la integral, sea una de Riemann, o de Lebesgue.\\
+
+\textbf{Riemann-Liouville}
+\[D_{t}^{\alpha} f(t)= (\frac{d}{dt})^{\alpha +1}(I^{1-\alpha}f(t)) \]
+donde $I^{1-\alpha}f(t)$ es la integral fraccionara del real.
+\[ I^{1-\alpha}f(t)= \frac{1}{\Gamma (\alpha)} \int_{0}^{t}\frac{f(\tau)}{(t-\tau)^{t-\alpha}}d\tau \]
+Este enfoque da resultados con una interpretabilidad complicada, hay que hacer más trabajo para propiamente 
+trasponer los resultados. Requiere sí o sí las condiciones iniciales para poder conseguir algo de interpretabilidad,
+las cuales no siempre se tienen.\\
+Se elabora con kernel que da una convusionalidad a las derivadas/integrales. Es lo que aporta la "memoria" por la 
+que es útil el cálculo fraccional. Pienso en el simil que hay entre la distribución Binomial y Gamma, pues la Gamma
+también parte de esa generalización del factorial y consigue ser una distribución binomial con "memoria".\\
+Hay un montón de posibles derivadas pero todas tienen distintas limitantes considerables que hay que considerar
+según el caso. \\
+El kernel casi siempre trabaja no-local/no-singular, forman distintos casos ya que no todas cumplen con 
+asociatividad/conmutatividad o en general axiomas de semigrupo.\\
+
+
+\printindex
+
+\end{document}
