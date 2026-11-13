@@ -194,12 +194,18 @@ Estos son apuntes realizados en la construcción de un curso de estadística que
   \item Freund, Miller; Mathematical Statistics with Applications
 \end{itemize}
 
-
+El curso iba enfocado al desarrollo de formalidad y familiraridad teórico-práctica intuitiva a una audiencia 
+con cierta distancia al medio, así que se omitieron demostraciones y ejercicios de varias secciones. Puede ser que
+ejercicios se añadan a posteriori.\\
+Otra nota importante es que poner las gráficas e imágenes es cierto trabajo en latex, así que tal vez se vayan
+añadiendo, pero un ejercicio recomendado es el de dibujarlas a mano, buscarlas o generarlas con algún programa
+de python o R.
 
 \section{Conceptos introductorios}
 
 Como el curso se tomaba desde cierta carencia de familiaridad con la matemática, fue necesario aclarar algunos
-conceptos básicos.
+conceptos básicos. No se abordaron desde la formalidad propia de un curso de conjuntos o probabilidad, porque 
+la idea era generar una familiaridad con el lenguaje y notación para secciones posteriores del curso.
 
 \begin{definicion}[Conjunto]
   Colección o agrupación bien definida de objetos (llamados elementos) que comparten característica o
@@ -211,7 +217,7 @@ conceptos básicos.
   \[ A = B \iff A \subset B \wedge B \subset A \]
 \end{definicion}
 
-\begin{definicion}[Operaciones de Conjuntos]
+\begin{definicion}[Operaciones de Conjuntos].\\
   \textbf{Unión}
   \[ A \cup B = \{ x | x \in A \vee x \in B\} \]
   \textbf{Intersección}
@@ -225,6 +231,38 @@ conceptos básicos.
   un único elemento de un conjunto final (codominio).
 \end{definicion}
 
+\begin{definicion}[Evento]
+  Un evento es una colección de posibles resultados de un experimento.\\
+  Usualmente $\Omega$ denota el espacio muestral, este sería el conjunto de todos los posibles resultados. 
+  Puede ser numerable o no numerable. 
+\end{definicion}
+
+\begin{definicion}[Eventos Disjuntos]
+  Dos eventos $A$ y $B$ son disjuntos (mutuamente exluyentes) si 
+  $A \cap B = \emptyset $. $A_{1},A_{2},...$ son disjuntos o 
+  mutuamente exclusivos si $A_{i} \cap A_{j} = \emptyset$ $\forall i \not = j$
+\end{definicion}
+
+\begin{definicion}[Partición]
+  Si $A_{1},A_{2},...$ son disjuntos y $\cup_{i=1}^{\infty}A_{i}=\Omega$, entonces
+  $A_{1},A_{2},...$ forma una partición de $\Omega$
+\end{definicion}
+
+Las particiones son útiles para dividir el espacio muestral de forma de crear resultados interpretables o manejables.
+Muchas de las categorías de datos continuos son ejemplos claros de partición, pudiera pensarse en calificaciones que
+van de 0-100 donde los valores menores a 70 son reprobados y el resto son aprobados. De tener que hacer un análisis 
+con valores potencialmente infinitos, se puede hacer con solo dos categorías. Se vuelve más interpretable o permite
+trabajar de forma distinta, ahora desde un enfoque de las frecuencias en lugar de formalmente densidades de probabilidad.
+Otro ejemplo pudiera ser la glucosa, que se parte en bajo, normal, prediabético y diabético. Categorías para valores
+de la variable continua de glucosa en sangre que se parten en 4 categorías interpretables.
+
+\section{Probabilidad}
+Los conceptos previos más escenciales y necesarios de la teoría de probabilidad para tener nociones de 
+lo que se realiza en estadística.\\
+La escencia de la probabilidad es que si algo puede describirse en terminos probabílisticos $\Rightarrow$ podemos
+analizarlo estadísticamente. La estadística por si sola es el mero análisis descriptivo de los datos más laxo posible,
+para poder inferir requerimos de la probabilidad y para ello se requiere que la muestra obtenida se haya obtenida
+a partir del azar. Sin Aleatoriedad en el muestreo, no hay nada de lo que se revisa a continuación.
 \begin{definicion}[Axiomas de Kolmogrov]\label{def:Kolmogrov}
   Dado esp. muestral $\Omega$ y $\sigma$-álgebra (partición) de $\Omega$,
     una función de probabilidad es una función $P$ con dominio $\sigma$
@@ -235,6 +273,9 @@ conceptos básicos.
         $P(\cup_{i=1}^{\infty}A_{i})= \sum_{i=1}^{\infty} P(A_{i})$
         \end{enumerate}
 \end{definicion}
+
+"frecuencia" es una forma particular de describir una probabilidad, la cual se entiende como la creencia en que un
+evento pueda ocurrir.
 
 \begin{ejemplo}
   Ejemplo de la moneda \\
@@ -278,8 +319,26 @@ $A \in \beta$ y $B \in \beta $ disjuntos, entonces $P(A \cup B)=P(A)+P(B)$
 
 Los temas de conteo en la sección de probabilidad se decartaron en cierta medida durante el curso para
 optimizar el tiempo en otros temas, aún así, se hicieron menciones breves particularmente para notar las diferencias 
-en los métodos de conteo. 
+en los métodos de conteo.\\
+La manera más típica desde la cual entender o tener una noción de los métodos de conteo es con ejemplo de boleto
+de lotería. Supugamos tenemos un boleto de lotería de seis números digamos que cada número es del 1 al 9,
+entonces habría $9 \times 8 \times 7 \times 6 \times 5 \times 4$ posibles boletos. Si en su caso, los números 
+fueran del 1 al 44, entonces habría $44 \times 43 \times 42 \times 41 \times 40 \times 39$.
 
+\begin{table}[H]
+  \centering
+  \caption{Métodos de conteo}
+  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}@{}}
+    \toprule
+    \textbf{Propiedad} & sin reemplazo & con reemplazo \\
+    \midrule
+    Sin orden           & $\frac{n!}{(n-r)!}$ & $n^{r}$ \\
+    Con orden         & $\binom{n}{r}$ & $\binom{n+r-1}{r}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \begin{teorema}
   Si un trabajo consiste en $k$ tareas que se puedan hacer de $n_j$ maneras, entonces
@@ -316,6 +375,7 @@ Notése que si $A\cap B = \emptyset \Rightarrow P(A\cap B)=0 \Rightarrow P(A|B)=
 \end{teorema}
 
 \begin{proof}
+  Teorema de Bayes caso base\\
   $P(A|B)P(B)=\frac{P(A\cap B)}{P(B)}$\\
   $P(A|B)P(B)=P(A\cap B)$ de manera análoga para $P(B|A)$ tendríamos \\
   $P(B|A)P(A)=P(A\cap B)$ por lo que podemos igualar ambas expresiones\\
@@ -330,6 +390,71 @@ Notése que si $A\cap B = \emptyset \Rightarrow P(A\cap B)=0 \Rightarrow P(A|B)=
 Notése que en caso de independencia tendríamos $P(A)= \frac{P(B|A)}{P(B)}P(A)$ que es
 equivalente a $1=\frac{P(B|A)}{P(B)}$ $\Rightarrow P(B)=P(B|A)$, lo cual es efectivamente 
 $P(A \cap B)=P(B)P(A)$
+
+\begin{definicion}
+  Si $A$ y $B$ son independientes 
+  \begin{enumerate}
+    \item $A$ y $B^c$
+    \item $A^{c}$ y $B$
+    \item $A^{c}$ y $B^{c}$
+  \end{enumerate}
+  Son independientes.
+\end{definicion}
+
+\begin{proof}
+  $P(A\cap B^{c})=P(A)-P(A\cap B)$\\
+  $=P(A)-P(A)P(B)$\\
+  $=P(A)(1-P(B))$\\
+  $=P(A)P(B^c)$
+\end{proof}
+
+\begin{definicion}[Mutuamente independiente]
+  Se dice que un evento es mutuamente independeinte cuando se cumple que 
+  \[ P(\bigcap^k_{j=1}A_{ij})=\prod^{k}_{j=1}A_{ij} \]
+\end{definicion}
+
+\section{Funciones de Distribución}
+
+\begin{definicion}[Variable Aleatoria]
+  Una variable aleatoria es una función $f:\Omega \rightarrow \R$\\
+  A esta función usualmente se le denota como $X$ cuando se habla de la función y $x_i$ 
+  cuando se habla de la i-ésima observación. La minúscula para cuando es un valor observado, la mayúscula 
+  es para la función.
+  \[ X=x_i \iff \sigma_j \in \sigma | X(\sigma_j)=x_i\] donde $sigma$ es una partición de $\Omega$ y $\sigma_j$ un elemento de la partición.\\
+  Una manera más clara de definirlo es expresándola expresamente como una probabilidad de eventos de las particiones 
+  del espacio muestral.
+  \[ P_X(X=x_i)=P(\conj{\sigma_j \in \sigma: X(\sigma_j)=x_i}) \]
+\end{definicion}
+
+\begin{definicion}
+  La función de distribucipon acumulada (cdf en inglés) de una variable aleatoria $X$ denotada por 
+  $F_{X}(x)$ es 
+  \[ F_X(x)=P_X(X\leq x) \forall x\]
+\end{definicion}
+
+\begin{ejemplo}
+  La función de probabilidad de tres monedas, donde $X=$cara puede describirse como\\
+  $F_X(x)=\left\{
+  \begin{array}{l}
+    0 \quad -\infty \leq x > 0 \\
+    \frac{1}{8} \quad 0 \leq x < 1 \\
+    \frac{1}{2} \quad 1 \leq x < 2 \\
+    \frac{7}{8} \quad 2 \leq x < 3 \\
+    1 \quad 3\leq x < \infty
+  \end{array}
+\right.$
+\end{ejemplo}
+
+\begin{teorema}
+  $F(x)$ es una función de probabilidad acumulada $\iff$
+  \begin{itemize}
+    \item $\lim_{x \to - \infty }F_{X}(x)=0$ y $\lim_{x \to + \infty }F_{X}(x)=1$
+    \item $F_{X}(x)$ es no decreciente
+    \item $F_{X}(x)$ es continua por la derecha
+  \end{itemize}
+\end{teorema}
+
+
 
 \begin{teorema}[Unicidad del límite]\label{thm:unicidad}
   Si una sucesión converge, su límite es único.
