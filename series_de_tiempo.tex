@@ -187,12 +187,11 @@
 %% ============================================================
 
 \chapter{Introducción}
-
-\section{Características de una serie de tiempo}
-
 Estos apuntes no son de un curso que se haya tomado de manera formal, sino que
 mayormente apuntes autodidáctas del libro Time Series and Its Applications: With R Examples, 
-de Shumway y Stoffer.\\
+de Shumway y Stoffer.
+
+\section{Características de una serie de tiempo}
 La necesidad de las series de tiempo viene de que contiene datos que incumplen la
 "estacionariedad", de la estadística usual, es decir, los datos dependen del momento en 
 tiempo en el que fueron tomados, más aún, los datos normalmente pertenecen a una dupla
@@ -252,7 +251,7 @@ los datos para la serie de tiempo, es escencial. De no ser seleccionado un aprop
 $aliasing$ que es cuando el muestreo es insuficiente y termina generando algo totalmente distinto en los datos,
 es como el efecto Moire o las sierritas en los gráficos 3D.
 
-\begin{ejemplo}[Ruido Blanco]
+\begin{ejemplo}[Ruido Blanco]\label{ej:ruido}
   Sea $w_i ~ N(0,\sigma^2) \forall i$ $\Rightarrow \conj{w_t}$ solo tiene datos aleatorios sin correlación
   alguna entre ellas, es lo que normalmente se entiende como ruido blanco. Esta variedad de series con 
   son de sumo interés y normalmente se describe al ruido con la antes mencionada distribución. 
@@ -262,12 +261,74 @@ es como el efecto Moire o las sierritas en los gráficos 3D.
 
 Si las ts pudieran ser explicadas en términos del ruido blanco, podríamos utilizar la estadística usual. 
 El detalle es que las ts no tienen este comportamiento usualmente o uno que nos permita de manera tan sencialla
-trabajar de esta forma. 
+trabajar de esta forma.
 
+\begin{ejemplo}[Media Deslizante]
+Consideremos $w_t$ del ejemplo anterior y realizemos una ponderación de valores:
+\[ x_t=\frac{1}{3}(w_{t-1}+w_{t}+w_{t+1}) \]
+\end{ejemplo}
+Se puede notar que está tendrá un comportamiento similar a \cref{ej:ruido} pero suavizando mucho, especialmente
+si se les compara en la misma escala. Es posible que si los gráficas por separado, sean parecidos pero algo recorridos,
+la gracia es cuando están en la misma escala y el haber calculado una media a través de los valores se nota, literalmente
+mediando los valores por los que va pasando.
+
+\begin{ejemplo}[Autoregresión]
+  Ahora consideremos
+  \[x_t=x_{t_1}-0.90x_{t-2} +w_t \]
+
+\end{ejemplo}
+Como $x_t$ depende de dos casos previos, en realidad se está haciendo una regresión en base a los valores previos,
+una predicción. Vale la pena revisar cómo se compara con \cref{ej:ruido} y con el anterior. En general, 
+es bueno comparar todos los ejercicios previos. 
+
+\begin{ejemplo}[Random Walk]
+  \[ x_t=\delta + x_{t-1} + w_t\]
+  Consideremos además $x_0=0$. Entonces $w_t$ es el ruido y $\delta$ es el $drift$. 
+\end{ejemplo}
+El $drift$ es la dirección de la caminata, hacía dónde se encaminan o con qué pendiente deberían ir 
+variando los valores. Este tiempo de ts se utiliza mucho en análisis financieros, particularmente
+para la simulación de variaciones de precio a través de Monte Carlo para determinar con intervalos
+de confianza la manera en que puede ir cambiando el precio con el tiempo, aunque es cierto que 
+el mismo problema usualmente es resuelto de manera anlítica con las ecuaciones Black-Scholes.\\
+Notemos además que $x_t=\delta t + \sum_{j = 1}^{t}w_j$
+
+\begin{proof}
+  $x_t=\delta t + \sum_{j = 1}^{t}w_j$\\
+  Resolvamos por inducción\\
+  La proposición es válida para el primer valor admisible, recordemos $x_0=0$\\
+  $\Rightarrow x_1=\delta + x_0+w_1=\delta + w_1$\\
+  Consideremos que la proposición es válida para un valor arbitrario, digamos $k$, nos
+  daría la hipótesis de inducción:
+  \[x_k=\delta k + \sum_{j = 1}^{k}w_j\]
+  Revisemos si la proposición es válida para el siguiente valor admisible, digamos $k+1$\\
+  $x_{k+1}=\delta + x_k + w_{k+1}$\\
+  $\quad \delta + \delta k + \sum_{j = 1}^{k}w_j + w_{k+1} $ por hipótesis de inducción\\
+  $\quad \delta (k+1) + \sum_{j = 1}^{k+1}w_j$
+\end{proof}  
+
+\begin{ejemplo}[Señales en ruido]
+\[x_t=2cos(\frac{2\pi t}{50}+0.6\pi)+w_t \]
+En términos generales podemos describir una ts con forma sinuidoal como:
+\[Acos(2\pi wt + \phi)\]
+donde
+\begin{itemize}
+  \item $A=$ amplitud
+  \item $w=$ frecuencia de la oscilación
+  \item $\phi=$ cambio de fase 
+\end{itemize}
+\end{ejemplo}
+El punto es observar cuando hay una variación de período consistente con un ruido aleatorio añadido\\
+Casi todos los ejemplos se trataron de modelos simples que son aquellos que pueden expresarse
+como $x_t=s_t+v_t$ donde $s_t$ son los datos de la serie y $v_t$ es tanto el ruido como si hay algo
+correlacionado. 
+
+\section{Autocorrelación}
+La manera en que unos datos dependen de otros no orientan a determinar que si hay una medida en 
+el que es particular interés fijarse son la covarianza y la correlación. 
 \section{Ejercicios}
 \begin{ejercicio}
-Considere la ts $x_t=s_t+w_t$ donde $w_t$ es ruido blanco gaussiano con media 0 y desviación 1. Simule
-y grafique los valores para $n=200$. Las formas de $s_t$ son:\\
+Considere la ts $x_t=s_t+w_t$ donde $w_t$ es ruido blanco gaussiano con media 0 y desviación 1. 
+Simule y grafique los valores para $n=200$. Las formas de $s_t$ son:\\
 
 a)\\
 $s_t=\left\{
