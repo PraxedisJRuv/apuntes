@@ -198,7 +198,71 @@ La necesidad de las series de tiempo viene de que contiene datos que incumplen l
 tiempo en el que fueron tomados, más aún, los datos normalmente pertenecen a una dupla
 $(valor,tiempo)$  ímplicita. Resultando en que tengan una autocorrelación, incumpliendo también las 
 hipótesis de independencia e idénticamente distribuidas. El acercamiento sistémico a la
-solución de estos problemas son las series de tiempo.
+solución de estos problemas son las series de tiempo.\\
+
+Una recomendación escencial es la de realizar un escrutinio claro de la información presente en
+la gráfica al comienzo de cualquier análisis o investigación de una serie de tiempo. Muchas veces,
+a través del gráfico y el contexto, podemos seleccionar el método de análisis estadístico para 
+condensar propiamente la información. Los enfoques particulares de esto último caen en dos categorías:
+$domain$ $approach$ y $frequency$ $domain$ $approach$.\\
+
+\textbf{Domain Approach:}\\
+Se asume que la correlación entre las observaciones adyacentes; pueden expresar el valor presente con 
+los valores pasados $pasado \rightarrow presente$. Modelar eventos futuros a través de información 
+pasada rima en la estadística más clásica con las regresiones y es que precisamente este enfoque 
+trabaja realizando regresiones lineales del presente al pasado, para generar información. 
+De estás ideas surgen las \textbf{ARIMA} ($autoregresive$ $integrated$ $meaning$ $average$) 
+para operar modelos con correlación en base al tiempo. A su vez existe un formato multivariado para 
+ARIMA o el uso de funciones de transferencias para cumplir con estos mismos objetivos.\\
+Estos modelos son multiplicativos, por lo que sus datos se asumen provenir de factores
+respecto a un "ruido blanco" entrante.
+
+\begin{observacion}
+  El nombre de "ruido blanco" viene de la luz blanca porque sus ondas poseen un comportamiento$\dots$
+  que no sé describir bien porque no soy de física y no llevé óptica, pero ahí lo dejo.
+\end{observacion}
+
+Existen modelos que provienen más de la suma de series que de un producto de factores, donde 
+cada sumando es una cierta estructura de serie de tiempo específica. Esto facilita muchas 
+consideraciones y procesos, pero también viene con sus complicaciones y limitaciones para ciertas
+condiciones.\\
+Las series de tiempo en memoria larga como GARCH también son un enfoque válido bajo el marco que 
+discute el $domain$ $approach$.\\
+
+\textbf{Frequency Domain:}\\
+En lugar de un correlación de datos adyacentes donde esta medida depende de la distancia entre
+puntos, este enfoque asume que la correlación es por una periodicidad, ya no depende de la 
+distancia entre puntos sino de los puntos en si. Normalmente se describe como donde hay presente
+una variación sinuidosidal.\\
+En Análisis espectral, la partición de varios tipos de variación en una serie de tiempo se 
+trabaja evalúando por separando las varianzas asociadas en la de periodicidad de interés.\\
+
+\begin{definicion}[Serie de Tiempo]
+  Colección de variables aleatorias indexadas acorde al orden el que se realizaron las observaciones
+  de los datos acorde a una medida de tiempo.\\
+  Sea $x_i$ una variable aleatoria $\Rightarrow x_1, x_2, x_3,...$ es una ts donde $x_1$ es la variable aleatoria 
+  correspondiente al valor observado en el primer momento, $x_2$ en el segundo,$...$\\
+  La serie puede escribirse como $x_t$ o $\conj{x_t}$ usualmente.
+\end{definicion}
+
+$\conj{x_t}$ propiamente se refiere a un proceso estocástico donde se aume $t$ discreto, ya que 
+obtener datos de manera continua y evaluarlo es algo prácitcamente inviable. Es por esta clase de
+detalles que debe tomarse en cuenta para entender que la elección de intervalos en los cuales muestrear
+los datos para la serie de tiempo, es escencial. De no ser seleccionado un apropiado intervalo caemos en
+$aliasing$ que es cuando el muestreo es insuficiente y termina generando algo totalmente distinto en los datos,
+es como el efecto Moire o las sierritas en los gráficos 3D.
+
+\begin{ejemplo}[Ruido Blanco]
+  Sea $w_i ~ N(0,\sigma^2) \forall i$ $\Rightarrow \conj{w_t}$ solo tiene datos aleatorios sin correlación
+  alguna entre ellas, es lo que normalmente se entiende como ruido blanco. Esta variedad de series con 
+  son de sumo interés y normalmente se describe al ruido con la antes mencionada distribución. 
+\end{ejemplo}
+  En varios ejemplos y ejercicios va a ser más concretamente con una normal estándar en lugar de varianza 
+  arbitraria. Lo que más importa es la distribución normal con media cero.\\
+
+Si las ts pudieran ser explicadas en términos del ruido blanco, podríamos utilizar la estadística usual. 
+El detalle es que las ts no tienen este comportamiento usualmente o uno que nos permita de manera tan sencialla
+trabajar de esta forma. 
 
 \section{Ejercicios}
 \begin{ejercicio}
