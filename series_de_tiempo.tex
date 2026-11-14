@@ -199,6 +199,68 @@ tiempo en el que fueron tomados, más aún, los datos normalmente pertenecen a u
 $(valor,tiempo)$  ímplicita. Resultando en que tengan una autocorrelación, incumpliendo también las 
 hipótesis de independencia e idénticamente distribuidas. El acercamiento sistémico a la
 solución de estos problemas son las series de tiempo.
+
+\section{Ejercicios}
+\begin{ejercicio}
+Considere la ts $x_t=s_t+w_t$ donde $w_t$ es ruido blanco gaussiano con media 0 y desviación 1. Simule
+y grafique los valores para $n=200$. Las formas de $s_t$ son:\\
+
+a)\\
+$s_t=\left\{
+  \begin{array}{l}
+    0 \quad 1 \leq t \leq 100 \\
+    10e^{\frac{-(t-100)}{20}}cos(\frac{2 \pi t}{4}) \quad 101\leq t \leq 200
+  \end{array}
+\right.$\\
+
+b)\\
+$s_t=\left\{
+  \begin{array}{l}
+    0 \quad 1 \leq t \leq 100 \\
+    10e^{\frac{-(t-100)}{200}}cos(\frac{2 \pi t}{4}) \quad 101\leq t \leq 200
+  \end{array}
+\right.$\\
+
+c)\\
+Compara y analiza ambas, además de revisar cómo se comportan en especifico los moduladores
+de ambas ts. Considera solo $t=1,...,100$
+
+\end{ejercicio}
+
+\begin{lstlisting}[language=R, caption={Solución}]
+zeros<-rep(0,100)
+w<-rnorm(200,0,1)
+t<-101:200
+#a)
+s<-10*exp(-(t-100)/20)*cos((2*pi*t)/4)
+x<-append(zeros,s) #Me recuerda a la curva del tópologo
+plot.ts(x+w)
+
+#b)
+s<-10*exp(-(t-100)/200)*cos((2*pi*t)/4)
+x<-append(zeros,s) 
+plot.ts(x+w)
+
+#c)
+#Moduladores de señal a)
+t<-1:100
+modula<-exp(-(t-100)/20)
+plot.ts(modula) 
+#moduladores de b)
+modula<-exp(-(t-100)/200)
+plot.ts(modula)
+
+
+\end{lstlisting}
+Reducir el exponente del producto exponencial reduce el ritmo de encoge de los picos de los períodos en b). \\
+La primera es bastante más similar a los gráficos del terremoto, aunque la parte media es mucho más
+ordenada que la del terremoto .La segunda se parece más a la explosión en el desorden inicial y mayor 
+patrón al final, aunque no captura el descenso repentino que la anterior sí tenía, aquí los picos
+se mantienen de forma mucho más similar a la del terremoto.\\
+Exponencial negativa de pendiente pronunciada como el descenso del gráfico, 
+desciende a su décima parte en menos de la mitad del tiempo.Parece recta del poco cambio que hay, 
+es casi que constante en su descenso y no desciende ni la mitad de su valor en el total del tiempo
+
 \begin{definicion}[Límite de una sucesión]\label{def:limite}
   Sea $(a_n)_{n\in\N}\subset\R$. Decimos que $a_n$ \termino{converge} a
   $L\in\R$ si
