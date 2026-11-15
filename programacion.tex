@@ -182,6 +182,136 @@
 \maketitle
 \tableofcontents
 
+\part{Aclaraciones}
+Estos son los apuntes más particulares y cómo tal, es necesario tener una serie de aclaraciones para
+entender la manera en que se hicieron y que se tiene pensado su uso. Para empezar, todo de aquí ha venido
+de manera autodidácta y de una variedad más que diversa de fuentes. Mientras el resto de apuntes vienen
+de un par de libros y de los propios cursos, aquí vienen de eso mismo, así como muchísimos foros, vídeos,
+conversaciones, publicaciones, webs y de una cantidad irrasteable de fuentes, así que hay que tener precaución.\\
+
+Lo segundo es que mucho, sino que todo, viene de preguntas que se concibieron durante la realización del código. 
+De eso vienen siendo muchos proyectos, muchos con repositorios propios y algunos sin publicarse y otros que existen 
+en los compendios donde tengo montones de ejercicios de práctica. Estos repositorios vienen siendo el compilado 
+de ejercicios de C++ \url{https://github.com/PraxedisJRuv/practice},un framework de simulaciones en C++ 
+\url{https://github.com/PraxedisJRuv/simulations}, pipline de IA para investigación clínica
+\url{https://github.com/PraxedisJRuv/Health_Research}, compilado de ejercicos para python 
+\url{https://github.com/PraxedisJRuv/Python-practice}. En general, todo lo que tiene entre mis repositorios en 
+\url{https://github.com/PraxedisJRuv}.\\
+
+Lo tercero es que no hay una seguridad clara de que estos apuntes sean para compartir más que a nivel 
+personal para juntar apuntes desorganizados de alguna forma y para tener algo de lo que estudiar con referencias 
+en caso de querer repasar o retomar algo. No es como el resto de apuntes que pueden servir como material 
+complementario para el estudio de un curso o incluso apoyo para el diseño de uno. Este está poco recomendado para
+ello. Para construir algo, programar algo, empaparse de lenguaje, herramientas y conceptos que no ve uno de primeras
+ni se revisan en cursos de programación, sí sirve, esa es una buena idea. Unos apuntes que tener al lado cuando se 
+construye algo.\\
+
+Este es el compendio de apuntes con más $spanglish$ con diferencia, parte de la razón tiene que 
+ver que el lenguaje usual en el ambiente del cómputo es en inglés y hay muchas palabras que no son 
+cómodamente traducibles al español además de que es rarísimo encontrarles así y es más cómodo en el
+propio inglés. De hecho, había apuntes que directamente mezcalaba no solo en los términos pero en las
+propias oraciones y estrucutras al inglés con el español. Si intentó corregir estos detalles al transcribir 
+los apuntes, pero siguen habiendo detalles. Así mismo, aquí se ignora la regla de cursivas para términos 
+en lengua extranjera ya que son demasiados y sería algo asburdo.\\
+
+\part{Generalidades}
+
+\chapter{Vocabulario de Sistemas}
+
+\section{Bases}
+\begin{definicion}[\termino{Threads}]
+  Unidades que realizan tareas separadas al mismo tiempo. Los threads del mismo 
+  proceso comparten memoria y archivos, ergo, comunicarse rápido.\\
+  Cada thread mantiene seguimiento de su ejecución incluido program counter, register set y 
+  espacio en el stack para variables locales.
+\end{definicion}
+Hay en software/CPU como uno descargando y otro respondiendo al cursos y otro al buscador.\\
+Hay CPU/Hardware que sirve para mucho software al mismo tiempo. \\
+Multithreading funcionan porque las computadores tienen múltiples núcleos.
+
+\section{Lock-Free}
+
+\begin{definicion}[\termino{Non-Blocking Progress}]
+  Se apoya en primitivos del hardware (compare-and-swap) CAS o 
+  Fetch-And-Add (FAA) a través de operaciones atómicas garantizando que al menos 
+  un hilo porque globalmente (look-free) o que todo hilo termine con una cantidad acotada de 
+  pasos (wait-free).\\
+  En general es la idea de diseño de organizar todo el flujo de manera apropiada para que no estorben los 
+  elementos propios del sistema, que no se bloqueen entre si.
+\end{definicion}
+
+\begin{definicion}[\termino{ABA problem}]
+  Cuando la dirección de memoria cambia de A a B y de vuelta a A,
+  baitea o engaña una aparición CAS a que no pase nada, que se resuelve con poderosos versionados
+  (Atomic Stomped Reference).
+\end{definicion}
+
+\begin{definicion}[\termino{Safe Memory Reclamation (SMR)}]
+  Descolocar Nodos de manera segura sin usar after-free requiere de herramientas 
+  como hazard pointers, epoch-based relocation, o garbage collection, más que 
+  solo liberar celdad o espacios de memoria.
+\end{definicion}
+
+\section{Cache-Aware}
+
+\begin{definicion}[\termino{False Sharing}]
+  Cuando hilos independientes modifican variables separadas que residen en el mismo
+  bloque de memoria, misma cache line de 64-byte CPU, causando problemas serios en la cache y memoria.
+  Se mitiga alineando los bloques de memoria apropiadamente. 
+\end{definicion}
+
+\begin{definicion}[\termino{Locality and Prefetching}]
+  Se diseñan explícitamente toda la estructura para maximizar la localización temporal 
+  y especial, manteniendo nodos frecuemente atendidos con metadata "ho" en ciertas caches,
+  reduciendo los viajes de memoria.
+\end{definicion}
+
+\begin{definicion}[\termino{Lazy Updates}]
+  Difiere estructuras de sincornización pesadas en lotes, lo que 
+  disminuye la tarifa de interconección en modelos de memoria baja. 
+\end{definicion}
+Es como el truco de juntar varias request de una API para no tener que estar 
+evaluando cada proceso separado, mejor juntarlos en lotes y después evaluarlos todos
+juntos sin tener que estar reiniciando la máquina todo el tiempo, aunque temrina quedando mucho
+más sensible a errores ya que si una request del lote falla, rompería ese ciclo de optimización.
+
+\section{Sistemas Distribuidos}
+
+\begin{definicion}[\termino{Nodo}]
+  Dispositivo de hardware o proceso de software que forma
+  parte del sistema y se comunica por una red.
+\end{definicion}
+
+\begin{definicion}[\termino{Escalabilidad horizontal}]
+  Capacidad de añadir más máquinas para manejar mayor carga de trabajo en
+  lugar de manejar un solo equipo.
+\end{definicion}
+
+\begin{definicion}[\termino{Tolerancia a fallos}]
+  Habilidad de la red para seguir funcionando aunque falle uno o más componentes.
+\end{definicion}
+
+\begin{definicion}[\termino{Teorema CAP}]
+  Un sistema distribuidosolo puede garantizar 2 propiedades simultáneamente entre consistencia, 
+  disponibilidad y tolerancia a particiones.
+\end{definicion}
+Esto debería ser un teorema, pero no tenía de dónde sacar la referencia para expresarlo
+formalmente. 
+
+\begin{definicion}[\termino{Consenso}]
+  Proceso mediante el cual varios nodos se ponen de acuerdo sobre un mismo valor o estado
+  del sistema.
+\end{definicion}
+
+\begin{definicion}[\termino{Idempotencia}]
+  Propiedad de una operación de ejecutarla varias veces obteniendo el mismo 
+  resultado y sin causar efectos secundarios no deseados.
+\end{definicion}
+
+\begin{definicion}[\termino{Balanceador de carga}]
+  Componente que represeta el tráfico de peticiones entre mútilpes
+  servidores para evitar saturaciones.
+\end{definicion}
 %% ============================================================
 \part{C++}
 %% ============================================================
