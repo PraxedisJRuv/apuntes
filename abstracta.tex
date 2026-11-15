@@ -1,0 +1,269 @@
+%% ============================================================
+%%  PLANTILLA DE APUNTES DE MATEMÁTICA
+%%  Compilar con:  pdflatex plantilla_apuntes.tex   (2 veces)
+%%  Para el índice analítico: makeindex plantilla_apuntes
+%%  y luego pdflatex otra vez. (Con --shell-escape se hace solo.)
+%% ============================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+%% ---------- Idioma y codificación ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+
+%% ---------- Página y párrafos ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}            % separación entre párrafos sin sangría
+\usepackage{setspace}
+\setstretch{1.1}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---------- Matemática ----------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+%% ---------- Figuras, tablas, colores ----------
+\usepackage{graphicx}
+\graphicspath{{figuras/}}       % pon tus imágenes en la carpeta "figuras"
+\usepackage{xcolor}
+\usepackage{booktabs}           % tablas bonitas (\toprule, \midrule)
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{float}              % permite [H] para fijar posición
+\usepackage{mwe}                % solo para imágenes de ejemplo; bórralo luego
+\usepackage{tikz}
+
+%% ---------- Código ----------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!40!black}\itshape,
+  stringstyle=\color{orange!80!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  backgroundcolor=\color{gray!8},
+  frame=single, rulecolor=\color{gray!40},
+  breaklines=true, showstringspaces=false, tabsize=4,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+}
+
+%% ---------- Índices ----------
+\usepackage{imakeidx}
+\makeindex[title=Índice analítico, intoc]
+
+%% ---------- Cajas de colores ----------
+\usepackage[most]{tcolorbox}
+
+%% ---------- Hipervínculos y referencias (SIEMPRE al final) ----------
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,
+            urlcolor=blue!60!black]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+
+%% ============================================================
+%%  ENTORNOS: definición, teorema, demostración, notas...
+%%  Todos comparten UN solo contador, dentro de cada capítulo.
+%% ============================================================
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[chapter]
+\newtheorem{ejemplo}[definicion]{Ejemplo}
+\newtheorem{ejercicio}[definicion]{Ejercicio}
+
+\theoremstyle{plain}
+\newtheorem{teorema}[definicion]{Teorema}
+\newtheorem{proposicion}[definicion]{Proposición}
+\newtheorem{lema}[definicion]{Lema}
+\newtheorem{corolario}[definicion]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem*{observacion}{Observación}
+\newtheorem*{notademo}{Nota sobre la demostración}
+\newtheorem*{idea}{Idea clave}
+
+\renewcommand{\proofname}{Demostración}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Nombres para cleveref
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{ejemplo}{ejemplo}{ejemplos}
+\Crefname{ejemplo}{Ejemplo}{Ejemplos}
+\crefname{ejercicio}{ejercicio}{ejercicios}
+\Crefname{ejercicio}{Ejercicio}{Ejercicios}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{chapter}{capítulo}{capítulos}
+\Crefname{chapter}{Capítulo}{Capítulos}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+
+% Estilo visual: barra lateral de color + fondo suave
+\tcbset{
+  cajabase/.style={enhanced, breakable, sharp corners, boxrule=0pt,
+    frame hidden, left=8pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=10pt, after skip=10pt}
+}
+\tcolorboxenvironment{definicion}{cajabase,
+  colback=blue!6,   borderline west={3pt}{0pt}{blue!65!black}}
+\tcolorboxenvironment{teorema}{cajabase,
+  colback=red!6,    borderline west={3pt}{0pt}{red!70!black}}
+\tcolorboxenvironment{proposicion}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{lema}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{corolario}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{ejemplo}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{ejercicio}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{notademo}{cajabase,
+  colback=yellow!14, borderline west={3pt}{0pt}{yellow!60!black}}
+\tcolorboxenvironment{observacion}{cajabase,
+  colback=gray!10,  borderline west={3pt}{0pt}{gray!70}}
+\tcolorboxenvironment{idea}{cajabase,
+  colback=purple!6, borderline west={3pt}{0pt}{purple!70}}
+
+%% ============================================================
+%%  ATAJOS MATEMÁTICOS
+%% ============================================================
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dpar}[2]{\frac{\partial #1}{\partial #2}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\pesc}{\langle}{\rangle}
+\DeclarePairedDelimiter{\conj}{\{}{\}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\Img}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\rg}{rg}
+
+% Atajo para "término indexado": lo escribe en el texto Y lo añade al índice
+\newcommand{\termino}[1]{\textbf{#1}\index{#1}}
+
+%% ============================================================
+%%  PORTADA
+%% ============================================================
+\title{Apuntes de Álgebra Abstracta}
+\author{Práxedis Jiménez Ruvalcaba}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+%% ============================================================
+\part{Teoría de Anillos y Campos}
+%% ============================================================
+
+\chapter{Primer Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+  Sea $F$ un campo. Determine si el anillo $F \times F$ también lo es.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $R=\conj{f:\R\rightarrow\R}$ una estructura con $f$ función con la suma y producto de funciones habitual.
+Muestre que si $f \not=0$ entonces $f$ es un divisor de cero, o una unidad.
+\end{ejercicio}
+
+\chapter{Segundo Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+Sea $R$ un anillo conmutativo. Demuestre que la característica $R[x]$ es la misma que la de $R$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Demuestre que si $f(x) \in \Z [x]$ es un polinomio irreducible y no constante, entonces $f(x)$ es primitivo.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $D$ un dominio entero. Demuestre que si $u \in D$ es una unidad, y $p\in D$ es un elemento irreducible, 
+entonces $up \in D$ es irreducible.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $D$ un dominio euclidiano con función (norma/medida) $d$. Demuestre que $a\in D$ es una unidad si y sólo si
+$d(a)=d(1)$
+\end{ejercicio}
+
+\chapter{Tercer Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+Sea $E$ una extensión de un campo $F$, y $a,b \in E$. Demuestre que $F(a,b)=F(a)F(b)$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Encuentre el campo de descomposición de $x^3-1$ sobre $\Q$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Demuestre que si $E$ es una extensión finita de $F$, entonces $E$ es una extensión algebraica de $F$.
+\end{ejercicio}
+
+\chapter{Cuarto Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+Dé un ejemplo explícito de un campo $F$ y de un conjunto $V$ que sea un $F[x]$-módulo.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $M$ un $R$-módulo, y sea $S\subseteq R$. ¿Qué condiciones debe cumplir $S$ para 
+que $M$ sea a su vez un $S$-módulo? 
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $M$ un $R$-módulo. Sea $\conj{N_\alpha}_{\alpha\in I}$ una colección no vacía de
+submódulos de $M$. Demuestre que $N*=\cap_{\alpha \in I} N_\alpha$ es un submódulo de $M$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $M$ un $R$-módulo, y $\conj{N_i}_{i\in \N}$ una colección de submódulos de $M$
+tales que $N_1 \subseteq N_2 \subseteq N_3 \subseteq ...$ Demuestre que 
+$N^{+}=\cup_{i=1}^{\infty}N_i$ es un submódulo de $M$. Muestre que el resultado es
+falso si se omité la condición de contenciones.
+\end{ejercicio}
+%% ============================================================
+%%  ÍNDICE ANALÍTICO
+%% ============================================================
+\printindex
+
+\end{document}

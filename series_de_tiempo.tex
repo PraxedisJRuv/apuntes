@@ -236,7 +236,7 @@ una variación sinuidosidal.\\
 En Análisis espectral, la partición de varios tipos de variación en una serie de tiempo se 
 trabaja evalúando por separando las varianzas asociadas en la de periodicidad de interés.\\
 
-\begin{definicion}[Serie de Tiempo]
+\begin{definicion}[\termino{Serie de Tiempo}]
   Colección de variables aleatorias indexadas acorde al orden el que se realizaron las observaciones
   de los datos acorde a una medida de tiempo.\\
   Sea $x_i$ una variable aleatoria $\Rightarrow x_1, x_2, x_3,...$ es una ts donde $x_1$ es la variable aleatoria 
@@ -324,7 +324,45 @@ correlacionado.
 
 \section{Autocorrelación}
 La manera en que unos datos dependen de otros no orientan a determinar que si hay una medida en 
-el que es particular interés fijarse son la covarianza y la correlación. 
+el que es particular interés fijarse son la covarianza y la correlación. \\
+Una serie de tiempo son al final $n$ variables aleatorias en $n$ momentos $t_1, t_2,...,t_n$,
+así que la distribución conjunta de estas nos daría toda la información que requisieramos para
+analizar propiamente la serie de tiempo. En particular, la distribución conjunta evaluando
+la probabilidad de los valores de la serie sean menores que las constantes $c_1,c_2,...,c_n$
+\[F(c_1,c_2,...,c_n)=P(x_{t_1}\leq c_1,x_{t_2}\leq c_2,...,x_{t_n}\leq c_n)\]
+
+El detalle es que una función así solo sería sencilla de obtener y evaluar si tratase de una
+normal multivariada o cada entrada fuera iid normal porque entonces podríamos por teorema de 
+probabilidad expresar la distribución de probabilidad conjunto como un producto de marginales
+\[F(c_1,c_2,...,c_n)=\prod_{t=1}^{n}\phi(c_t)\] 
+\[\phi(x)=\frac{1}{\sqrt{2\pi}}\int_{0}^{x}e^{-\frac{z^2}{2}} dz \]
+Que es la acumulada de una normal.\\
+Y una vez conseguido describir los datos de esta forma, el otro detalle es que no se puede gráficar.
+Lo más que se puede hacer es graficar la distribución de un momento específico. Tal vez dos e incluso
+ahí no tendría mucho sentido ni aporte, admeás de que lo hace parecer como si quisiera uno forzar
+los usos y costumbres de la estadística usual.
+
+\begin{definicion}[Función Media]
+  \[ \mu_{x_t}=E(x_t)=\int_{-\infty}^{\infty}xf_t(x)dx\]
+\end{definicion}
+$E$ es el operador de valor esperado que vuelve de probabilidad con el mismo significado como
+primer momento de centralidad. Solo que es la centralidad en el momento $t$, se analiza hasta 
+lo que en teoría ha causado o repercutido dicho momento.
+
+\begin{ejemplo}
+  Retomando los ejemplos de la sección anterior, empezando por \cref{ej:ruido}\\
+  1)\\
+  $E(w_t)=0$ porque $w_i~N(0,\sigma^2) \forall i$\\
+  2)\\
+  $E(\frac{1}{3}(w_{t-1}+w_{t}+w_{t+1}))=\frac{1}{3}(E(w_{t-1})+E(w_t)+E(w_{t+1}))$\\
+  $\quad = \frac{1}{3}(0)=0$ por 1)\\
+  3)\\
+  $E(\delta t + \sum_{j = 1}^{t}w_j)=E(\delta t)+\sum_{j = 1}^{t}E(w_j)$ por linealidad de $E$\\
+  $\quad \delta t +0 =\delta t$ El drift por el tiempo es la media, lo cuál es una recta.
+\end{ejemplo}
+Notése que al ser una recta, esa última media no está acotada por arriba, por lo que podría
+no ser finita, algo que impediría la existencia de varianza en la distribución. 
+
 \section{Ejercicios}
 \begin{ejercicio}
 Considere la ts $x_t=s_t+w_t$ donde $w_t$ es ruido blanco gaussiano con media 0 y desviación 1. 
@@ -385,188 +423,6 @@ se mantienen de forma mucho más similar a la del terremoto.\\
 Exponencial negativa de pendiente pronunciada como el descenso del gráfico, 
 desciende a su décima parte en menos de la mitad del tiempo.Parece recta del poco cambio que hay, 
 es casi que constante en su descenso y no desciende ni la mitad de su valor en el total del tiempo
-
-\begin{definicion}[Límite de una sucesión]\label{def:limite}
-  Sea $(a_n)_{n\in\N}\subset\R$. Decimos que $a_n$ \termino{converge} a
-  $L\in\R$ si
-  \[
-    \forall \eps>0\;\exists N\in\N\;\text{tal que}\;
-    n\ge N \implies \abs{a_n-L}<\eps .
-  \]
-\end{definicion}
-
-\begin{teorema}[Unicidad del límite]\label{thm:unicidad}
-  Si una sucesión converge, su límite es único.
-\end{teorema}
-
-\begin{notademo}
-  La idea es suponer dos límites distintos y usar la desigualdad triangular
-  con $\eps = \abs{L-L'}/2$ para llegar a una contradicción.
-  Esta técnica se reutiliza en el \cref{cor:sumas}.
-\end{notademo}
-
-\begin{proof}
-  Sean $L\neq L'$ dos límites de $(a_n)$ y tomemos $\eps=\tfrac{1}{2}\abs{L-L'}>0$.
-  Por la \cref{def:limite}, existen $N_1,N_2$ tales que
-  $\abs{a_n-L}<\eps$ si $n\ge N_1$ y $\abs{a_n-L'}<\eps$ si $n\ge N_2$.
-  Para $n\ge\max\{N_1,N_2\}$:
-  \begin{align}
-    \abs{L-L'} &\le \abs{L-a_n}+\abs{a_n-L'} \label{eq:triangular}\\
-               &< 2\eps = \abs{L-L'},
-  \end{align}
-  lo cual es absurdo.
-\end{proof}
-
-\begin{corolario}\label{cor:sumas}
-  Si $a_n\to L$ y $b_n\to M$, entonces $a_n+b_n\to L+M$.
-\end{corolario}
-
-\begin{observacion}
-  La desigualdad \eqref{eq:triangular} también aparece en la prueba del
-  \cref{thm:unicidad}. Referencias automáticas: \cref{def:limite},
-  \cref{thm:unicidad}, \cref{cor:sumas}; en el PDF cada una es un enlace
-  clicable. Con \verb|\Cref| se escribe con mayúscula inicial al comienzo
-  de frase, y con \verb|\cpageref| podrías citar la página.
-\end{observacion}
-
-\begin{ejemplo}
-  La sucesión $a_n=1/n$ converge a $0$: dado $\eps>0$ basta tomar
-  $N>1/\eps$.
-\end{ejemplo}
-
-\section{Código}
-
-\begin{lstlisting}[language=Python, caption={Primeros términos de $1/n$}]
-# Calcula los primeros términos de la sucesión
-for n in range(1, 6):
-    print(n, 1 / n)
-\end{lstlisting}
-
-En línea: la función \lstinline[language=Python]|math.sqrt(2)| devuelve $\sqrt2$.
-Para código desde un archivo externo:
-\verb|\lstinputlisting[language=Python]{codigo/ejemplo.py}|.
-
-\section{Tablas}
-
-\subsection{Tabla horizontal (encabezado en la primera fila)}
-
-\begin{table}[H]
-  \centering
-  \caption{Valores de $f(x)=x^2$.}
-  \label{tab:horizontal}
-  \begin{tabular}{@{}lccccc@{}}
-    \toprule
-    $x$    & $-2$ & $-1$ & $0$ & $1$ & $2$ \\
-    \midrule
-    $f(x)$ & $4$  & $1$  & $0$ & $1$ & $4$ \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\subsection{Tabla vertical (encabezado en la primera columna)}
-
-\begin{table}[H]
-  \centering
-  \caption{Propiedades de los conjuntos numéricos.}
-  \label{tab:vertical}
-  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
-                    >{\centering\arraybackslash}p{2.2cm}
-                    >{\centering\arraybackslash}p{2.2cm}@{}}
-    \toprule
-    \textbf{Propiedad} & $\Q$ & $\R$ & $\C$ \\
-    \midrule
-    Cuerpo           & Sí & Sí & Sí \\
-    Ordenado         & Sí & Sí & No \\
-    Completo         & No & Sí & Sí \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-Tabla con texto largo que se ajusta al ancho (\verb|tabularx|):
-
-\begin{table}[H]
-  \centering
-  \begin{tabularx}{\textwidth}{@{}lX@{}}
-    \toprule
-    \textbf{Concepto} & \textbf{Descripción} \\
-    \midrule
-    Cota superior & Número mayor o igual que todos los elementos del conjunto,
-                    que puede o no pertenecer a él. \\
-    Supremo       & La menor de las cotas superiores. \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
-
-Las referencias funcionan igual: ver \cref{tab:horizontal} y \cref{tab:vertical}.
-Para tablas muy largas que cruzan páginas usa \verb|longtable|.
-
-\section{Imágenes}
-
-\begin{figure}[H]
-  \centering
-  % Reemplaza example-image-a por tu archivo, p. ej. grafico.png
-  % (colócalo en la carpeta "figuras")
-  \includegraphics[width=0.45\textwidth]{example-image-a}
-  \caption{Pie de figura.}
-  \label{fig:ejemplo}
-\end{figure}
-
-\Cref{fig:ejemplo} muestra una imagen. También puedes dibujar con TikZ:
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[scale=1.2]
-    \draw[->] (-0.3,0) -- (3,0) node[right] {$x$};
-    \draw[->] (0,-0.3) -- (0,2.5) node[above] {$y$};
-    \draw[domain=0:1.55, smooth, thick, blue] plot (\x, {\x*\x});
-  \end{tikzpicture}
-  \caption{Gráfico de $y=x^2$ dibujado con TikZ.}
-  \label{fig:tikz}
-\end{figure}
-
-%% ------------------------------------------------------------
-\chapter{Segundo tema del curso}
-
-\begin{teorema}[Ejemplo de cita cruzada]\label{thm:cruzado}
-  Usando el \cref{thm:unicidad} del \cref{chap:limites-ref}... (cita a otro
-  capítulo con \verb|\cref{chap:...}| tras poner un \verb|\label| en él).
-\end{teorema}
-
-\chapter{Tema con etiqueta}\label{chap:limites-ref}
-
-Texto del capítulo referenciado arriba. Recuerda: ejecuta \texttt{pdflatex}
-dos veces para que las referencias se resuelvan.
-
-%% ============================================================
-\part{Nombre del segundo curso (p.\,ej. Álgebra Lineal)}
-%% ============================================================
-
-\chapter{Espacios vectoriales}
-
-\begin{definicion}[Espacio vectorial]\label{def:ev}
-  Un \termino{espacio vectorial} sobre un cuerpo $\mathbb{K}$ es un conjunto $V$
-  con operaciones suma y producto por escalares que cumplen los axiomas usuales.
-\end{definicion}
-
-\begin{teorema}[Teorema de la dimensión]\label{thm:dim}
-  Sea $T:V\to W$ lineal con $\dim V<\infty$. Entonces
-  \[
-    \dim V = \dim\Ker T + \dim\Img T .
-  \]
-\end{teorema}
-
-\begin{proof}
-  Sea $\{u_1,\dots,u_k\}$ una base de $\Ker T$, que se extiende a una base
-  $\{u_1,\dots,u_k,v_1,\dots,v_m\}$ de $V$. Se prueba que
-  $\{Tv_1,\dots,Tv_m\}$ es base de $\Img T$.
-\end{proof}
-
-\begin{idea}
-  Extender una base del núcleo a una base de todo el espacio.
-\end{idea}
-
-Se usa el \cref{thm:dim} junto con la \cref{def:ev}. Recuerda además que la
-matriz $A=\begin{pmatrix} 1 & 2\\ 3 & 4\end{pmatrix}$ tiene $\rg A=2$.
 
 %% ============================================================
 %%  ÍNDICE ANALÍTICO
