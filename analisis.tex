@@ -1,0 +1,416 @@
+%% ============================================================
+%%  PLANTILLA DE APUNTES DE MATEMÁTICA
+%%  Compilar con:  pdflatex plantilla_apuntes.tex   (2 veces)
+%%  Para el índice analítico: makeindex plantilla_apuntes
+%%  y luego pdflatex otra vez. (Con --shell-escape se hace solo.)
+%% ============================================================
+\documentclass[11pt,a4paper,oneside]{report}
+
+%% ---------- Idioma y codificación ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[spanish,es-noshorthands]{babel}
+\usepackage{microtype}
+
+%% ---------- Página y párrafos ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{parskip}            % separación entre párrafos sin sangría
+\usepackage{setspace}
+\setstretch{1.1}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\nouppercase{\leftmark}}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+%% ---------- Matemática ----------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+
+%% ---------- Figuras, tablas, colores ----------
+\usepackage{graphicx}
+\graphicspath{{figuras/}}       % pon tus imágenes en la carpeta "figuras"
+\usepackage{xcolor}
+\usepackage{booktabs}           % tablas bonitas (\toprule, \midrule)
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{float}              % permite [H] para fijar posición
+\usepackage{mwe}                % solo para imágenes de ejemplo; bórralo luego
+\usepackage{tikz}
+
+%% ---------- Código ----------
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!40!black}\itshape,
+  stringstyle=\color{orange!80!black},
+  numbers=left, numberstyle=\tiny\color{gray}, numbersep=8pt,
+  backgroundcolor=\color{gray!8},
+  frame=single, rulecolor=\color{gray!40},
+  breaklines=true, showstringspaces=false, tabsize=4,
+  literate={á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+           {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+           {ñ}{{\~n}}1 {Ñ}{{\~N}}1
+}
+
+%% ---------- Índices ----------
+\usepackage{imakeidx}
+\makeindex[title=Índice analítico, intoc]
+
+%% ---------- Cajas de colores ----------
+\usepackage[most]{tcolorbox}
+
+%% ---------- Hipervínculos y referencias (SIEMPRE al final) ----------
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=green!40!black,
+            urlcolor=blue!60!black]{hyperref}
+\usepackage[spanish,nameinlink]{cleveref}
+
+%% ============================================================
+%%  ENTORNOS: definición, teorema, demostración, notas...
+%%  Todos comparten UN solo contador, dentro de cada capítulo.
+%% ============================================================
+\theoremstyle{definition}
+\newtheorem{definicion}{Definición}[chapter]
+\newtheorem{ejemplo}[definicion]{Ejemplo}
+\newtheorem{ejercicio}[definicion]{Ejercicio}
+
+\theoremstyle{plain}
+\newtheorem{teorema}[definicion]{Teorema}
+\newtheorem{proposicion}[definicion]{Proposición}
+\newtheorem{lema}[definicion]{Lema}
+\newtheorem{corolario}[definicion]{Corolario}
+
+\theoremstyle{remark}
+\newtheorem*{observacion}{Observación}
+\newtheorem*{notademo}{Nota sobre la demostración}
+\newtheorem*{idea}{Idea clave}
+
+\renewcommand{\proofname}{Demostración}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Nombres para cleveref
+\crefname{definicion}{definición}{definiciones}
+\Crefname{definicion}{Definición}{Definiciones}
+\crefname{teorema}{teorema}{teoremas}
+\Crefname{teorema}{Teorema}{Teoremas}
+\crefname{proposicion}{proposición}{proposiciones}
+\Crefname{proposicion}{Proposición}{Proposiciones}
+\crefname{lema}{lema}{lemas}
+\Crefname{lema}{Lema}{Lemas}
+\crefname{corolario}{corolario}{corolarios}
+\Crefname{corolario}{Corolario}{Corolarios}
+\crefname{ejemplo}{ejemplo}{ejemplos}
+\Crefname{ejemplo}{Ejemplo}{Ejemplos}
+\crefname{ejercicio}{ejercicio}{ejercicios}
+\Crefname{ejercicio}{Ejercicio}{Ejercicios}
+\crefname{equation}{ecuación}{ecuaciones}
+\Crefname{equation}{Ecuación}{Ecuaciones}
+\crefname{figure}{figura}{figuras}
+\Crefname{figure}{Figura}{Figuras}
+\crefname{table}{tabla}{tablas}
+\Crefname{table}{Tabla}{Tablas}
+\crefname{chapter}{capítulo}{capítulos}
+\Crefname{chapter}{Capítulo}{Capítulos}
+\crefname{section}{sección}{secciones}
+\Crefname{section}{Sección}{Secciones}
+
+% Estilo visual: barra lateral de color + fondo suave
+\tcbset{
+  cajabase/.style={enhanced, breakable, sharp corners, boxrule=0pt,
+    frame hidden, left=8pt, right=6pt, top=4pt, bottom=4pt,
+    before skip=10pt, after skip=10pt}
+}
+\tcolorboxenvironment{definicion}{cajabase,
+  colback=blue!6,   borderline west={3pt}{0pt}{blue!65!black}}
+\tcolorboxenvironment{teorema}{cajabase,
+  colback=red!6,    borderline west={3pt}{0pt}{red!70!black}}
+\tcolorboxenvironment{proposicion}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{lema}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{corolario}{cajabase,
+  colback=orange!7, borderline west={3pt}{0pt}{orange!80!black}}
+\tcolorboxenvironment{ejemplo}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{ejercicio}{cajabase,
+  colback=green!5,  borderline west={3pt}{0pt}{green!45!black}}
+\tcolorboxenvironment{notademo}{cajabase,
+  colback=yellow!14, borderline west={3pt}{0pt}{yellow!60!black}}
+\tcolorboxenvironment{observacion}{cajabase,
+  colback=gray!10,  borderline west={3pt}{0pt}{gray!70}}
+\tcolorboxenvironment{idea}{cajabase,
+  colback=purple!6, borderline west={3pt}{0pt}{purple!70}}
+
+%% ============================================================
+%%  ATAJOS MATEMÁTICOS
+%% ============================================================
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\dpar}[2]{\frac{\partial #1}{\partial #2}}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\pesc}{\langle}{\rangle}
+\DeclarePairedDelimiter{\conj}{\{}{\}}
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\tg}{tg}
+\DeclareMathOperator{\Img}{Im}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\rg}{rg}
+
+% Atajo para "término indexado": lo escribe en el texto Y lo añade al índice
+\newcommand{\termino}[1]{\textbf{#1}\index{#1}}
+
+%% ============================================================
+%%  PORTADA
+%% ============================================================
+\title{Apuntes de Análisis}
+\author{Práxedis Jiménez Ruvalcaba}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+%% ============================================================
+\part{Análisis I}
+
+
+
+%% ============================================================
+\part{Análisis II}
+
+\chapter{Tercer Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+Sean $f,g$ funciones integrables $[a,b]$. Determine si la función 
+\[ h (x) =\frac{|f(x)-g(x)|+f(x)+g(x)}{2} \]
+es integrable en $[a,b]$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sean $f,g$ funciones continuas en $[a,b]$ tal que para todo $x\in[a,b],f(x)>g(x)$. 
+Demuestre que $\int_{a}^{b}f(x) dx > \int_{a}^{b}g(x) dx$. (Note que es estricta la desigualdad).
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $f:[a,b]\rightarrow \R$ una función continua. Demuestre que existe un $c\in (a,b)$ tal que
+\[ \int_{a}^{b}f(x)dx=f(c)(b-a)\]
+\end{ejercicio}
+
+\begin{ejercicio}
+Sea $f:[0,1]\rightarrow \R$ una función tal que, para todo $x\in[0,1]$, 
+$\int_{0}^{x}f dx = \int_{x}^{1}f dx$. Demuestre que $f(x)=0$ para todo
+$x \in [0,1]$.
+\end{ejercicio}
+
+\begin{ejercicio}
+Sean $f,g$ funciones integrables $[a,b]$. Demuestre que la función 
+$M(x)=max(f(x),g(x))$ es integrable en $[a,b]$
+\end{ejercicio}
+
+%% ============================================================
+\part{Análisis Funcional}
+
+\chapter{Primer Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+Si $(X, d)$ es un espacio metrico, demuestre que $\bar{d}(x,y)=\frac{d(x,y)}{1+d(x,y)}$
+es otra métrica en $X$.
+\end{ejercicio}
+
+\begin{proof}
+  i)\\
+  Como $d$ es métrica en $X$ $\Rightarrow d(x,y) \geq 0 \quad \forall x,y \in X$\\
+  $\therefore \bar{d}(x,y)\geq \quad \forall x,y \in X$\\
+  ii)\\
+  Como $d(x,y)=0 \iff x=y$\\
+  $\therefore \bar{d}(x,y)=\frac{d(x,y)}{1+d(x,y)}=0 \iff x=y$\\
+  iii)\\
+  Como $d(x,y)=d(y,x)\quad \forall x,y \in X$\\
+  $\Rightarrow 1+ d(x,y)=1+d(y,x)$\\
+  $\therefore \frac{d(x,y)}{1+d(x,y)}=\frac{d(y,x)}{1+d(y,x)} \quad \forall x,y \in X$\\
+  iv)\\
+  Sea $f(x)=\frac{x}{1+x}$ con $x\in\R$, $f'(x)=\frac{1}{(1+x)^2}$\\
+  entonces $f$ es diferenciable y $f'(x)>0 \quad \forall x\in \R$ que por teorema,
+  $f$ es estrictamente creciente\\
+  $d$ es métrica así que $d(x,z)\leq d(x,y)+d(y,z)\quad x,y,z \in X$ y al ser $f$ estrictamente creciente,
+  $f(d(x,z))\leq f(d(x,y)+d(y,z))$ $\Rightarrow \bar{d}(x,z)=\frac{d(x,z)}{1+d(x,z)}\leq \frac{d(x,y)+d(y,z)}{1+d(x,y)+d(y,z)}$\\
+  $\bar{d}(x,z)=\frac{d(x,y)}{1+d(x,y)+d(y,z)}+\frac{d(y,z)}{1+d(x,y)+d(y,z)}$\\
+  Como $d(x,y)\geq 0$ y $d(y,z)\geq0$; $1+d(x,y)+d(y,z)\geq 1 + d(x,y)$ y $1+d(x,y)+d(y,z)\geq 1 + d(y,z)$\\
+  Luego multiplicamos $d(x,y$) por $\frac{1}{1+d(x,y)+d(y,z)}\leq \frac{1}{1+d(x,y)}$; 
+  $\frac{d(x,y)}{1+d(x,y)+d(y,z)}\leq \frac{d(x,y)}{1+d(x,y)}$\\
+  De forma análoga, $\frac{d(y,z)}{1+d(x,y)+d(y,z)}\leq \frac{d(y,z)}{1+d(y,z)}$\\
+  De manera que ahora podemos decir $\bar{d}(x,z)\leq \frac{d(y,z)}{1+d(y,z)} + \frac{d(x,y)}{1+d(x,y)}=\bar{d}(x,y)+\bar{d}(y,z)$ 
+  $\forall x,y,z \in X$\\
+  $\therefore$ se cumplen los axiomas para determinar que $\bar{d}$ es métrica.
+\end{proof}
+
+\begin{ejercicio}
+  Un conjunto $A$ en un espacio métrico $(X,d)$ es acotado si 
+  $\delta(A)=sup\conj{d(x,y)|x,y\in A}<\infty$. Demuestre que la unión de dos 
+  conjuntos acotados es acotado.
+\end{ejercicio}
+
+\begin{proof}
+  Sean $A,B$ conjuntos acotados.\\
+  Si $A=\emptyset$ o $B=\emptyset$, $A\cup B$ es acotado. Suponga entonces $A,B \not = \emptyset$\\
+  Suponga $A\cup B$ no es acotada ergo, $sup\conj{d(x,y)|x,y\in A\cup B}=\infty$\\
+  Entonces para cada $n\in \N$ existen $x_n, z_n \in A\cup B$ con $d(x_n,z_n) \geq n$\\
+  Como $A$ y $B$ son acotados, tomamos $N\in \N$ con $N>\delta(A)$ y $N>\delta(B)$\\
+  Si $n\geq N$, $x_n$ y $z_n$ no puden ser del mismo conjunto:\\
+  $x_n, z_n ,\in A \Rightarrow \quad d(x_n,z_n)\geq n>N> \delta(A)=sup\conj{d(u,v)|u,v\in A}$\\
+  $x_n, z_n ,\in B \Rightarrow \quad d(x_n,z_n)\geq n>N> \delta(B)=sup\conj{d(u,v)|u,v\in B}$\\
+  En ambos casos se llegan a una contradicción por la definición del supremo\\
+  Suponga $x_n \in A, z_n\in B \forall n \geq N$, pues al tener 
+  $d(x,y)=d(y,x) \forall x,y \in X$ podemos intercambiar $x_n$ con $z_n$ si $x_n \in B$ y $z_n \in A$
+  para algunos $n \geq N$\\
+  Sea $y\in A$ $d(x_n,z_n)\leq d(x_n,y)+ d(y,z_n)$ Tomando $n\rightarrow \infty$ como 
+  $d(x_n,z_n)\rightarrow \infty \Rightarrow \quad d(x_n,y)+ d(y,z_n)\rightarrow \infty$\\
+  Pero $x_n,y \in A \Rightarrow \quad d(x_n, y)\leq \delta(A) \quad \forall n\geq N$, por lo que 
+  $d(y,z_n)\rightarrow \infty$ cuando $n\rightarrow \infty$\\
+  Además, si $w\in B$ fijo, $d(y,z_n)\leq d(y,w)+d(w,z_n)$\\
+  $\Rightarrow d(y,z_n)\leq d(y,w)+\delta(B) \quad \forall n\geq N$\\
+  Contradiciendo que $d(y,z_n)$ no está acotado. Por tanto, $A\cup B$ es acotado.
+\end{proof}
+
+\begin{ejercicio}
+  Sea $x_0$ un punto fijo en el espacio métrico $(X,d)$ y $r>0$. Demuestre que 
+  $\conj{x\in X | d(x,x_0)\leq r}$ es cerrado. 
+\end{ejercicio}
+
+\begin{proof}
+  Llamemos $\bar{B_r}(x_0)$ al conjunto dado y probemos que es cerrado mostrando que 
+  $X-\bar{B_r}(x_0)$ es abierto.\\
+  Tomemos $y_0 \in X- \bar{B_r}(x_0)$\\
+  Como $y_0 \not \in \bar{B_r}(x_0)\Rightarrow \quad d(x_0,y_0)>r$\\
+  Consideremos $r'=d(x_0,y_0) - r>0$ y tomemos $y\in \bar{B_{r'}}(y_0)$\\
+  Notemos que $d(y,y_0)<d(x_0,y_0)-r\leq d(y_0,y)+d(y,x_0)-r$\\
+  $\Rightarrow r < d(y,x_0)$\\
+  Así que $y\not \in \bar{B_r}(x_0)$\\
+  $\Rightarrow X-\bar{B_r}(x_0)$ es abierto\\
+  $\therefore \bar{B_r}(x_0)$ es cerrado
+\end{proof}
+
+\begin{ejercicio}
+  Si $(x_n)$ y $(y_n)$ son sucesiones de Cauchy en un espacio métrico $(X,d)$, 
+  demuestre que $(d(x_n,y_n))$ converge
+\end{ejercicio}
+
+\begin{proof}
+Como $(x_n)$ es Cauchy \\
+$\Rightarrow \forall \epsilon>0 \quad \exists N_1\in \N |$ si $n,m>N_1\Rightarrow d(x_n,x_m)<\frac{\epsilon}{2}$\\
+Y como $(y_n)$ es Cauchy \\
+$\Rightarrow \forall \epsilon>0 \quad \exists N_2\in \N |$ si $n,m>N_2\Rightarrow d(y_n,y_m)<\frac{\epsilon}{2}$\\
+Sea $N_0=max\conj{N_1,N_2}$\\
+$\Rightarrow d(x_n,y_n)\leq d(x_n, x_m) + d(y_n, y_m)+ d(x_m,y_m)$\\
+$\Rightarrow d(x_n,y_n)-d(x_m,y_m)\leq d(x_n, x_m) + d(y_n, y_m)$\\
+$\Rightarrow d(x_n,y_n)-d(x_m,y_m) < \frac{\epsilon}{2}+\frac{\epsilon}{2}=\epsilon$\\
+Estas desigualdades se pueden realizar de manera análoga para $d(x_m,y_m)-d(x_n,y_n) < \epsilon $\\
+$\Rightarrow |d(x_n,y_n)-d(x_m,y_m)| < \epsilon $ $\forall \epsilon>0 $ y $n,m>N_0$\\
+$\therefore \conj{d(x_n,y_n)}$ es una sucesión de Cuachy en $\R$ con la métrica usual, la cual sabemos es un espacio
+completo\\
+$\therefore \conj{d(x_n,y_n)}$ es una sucesión convergente
+\end{proof}
+
+\begin{ejercicio}
+  Sea $X =\R^n$ con métrica $d(x,y)=max\conj{|x_i-y_i| \quad | i=1,2,...,n}$
+  donde $x=(x_1,x_2,...,x_n)$, $y=(y_1,y_2,...,y_n)$. Demuestre que $(X,d)$
+  es completo.
+\end{ejercicio}
+
+\begin{proof}
+  Tomeos $(x_n)$ sucesión de Cauchy en $\R^n$\\
+  $\Rightarrow \forall \epsilon>0 \quad \exists N_0\in \N |$ si $n,m>N_0\Rightarrow d(x^n,x^m)<\epsilon$\\
+  $\Rightarrow max\conj{|x_i^n-x_i^m| \quad | i\in \conj{1,...,n}}<\epsilon$\\
+  O sea que la máxima diferencia entre todas las componentes de dos elementos de la sucesión es tan chica como queramos
+  y si consideramos $i\in \conj{1,...,n}$\\
+  $\Rightarrow \forall \epsilon>0 \quad \exists N_i\in \N |$ si $n,m>N_i\Rightarrow d(x_i^n,x_i^m)<\epsilon$\\
+  Esto nos da una sucesión de Cauchy en $\R$, el cual es completo\\
+  $\therefore (x_i^{n})_{n \in \N}$ es sucesión convergente\\
+  Esto $\forall i\in \conj{1,...,n}$ converge a un elemento de $\R$, digamos $k_i \Rightarrow k=(k_1,k_2,...,k_n)\in \R^n$\\
+  Sea $N=max\conj{N_i | i\in \conj{1,...,n}}$\\
+  $\forall \epsilon >0$ si $n>N \Rightarrow \quad d(x^n,k)<\epsilon$\\
+  $\therefore (x^{n})$ converge a un elemento de $X$, y como Cauchy es una arbitraria\\ 
+  $\therefore (X,d)$ es un espacio completo
+\end{proof}
+
+\chapter{Segundo Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+  Si $(X_1, \|.\|_1)$ y $(X_2, \|.\|_2)$ son espacios normados, demuestre que el 
+  espacio vectorial $X=X_1\times X_2$ es un espacio normado si se define 
+  $\|x\|=max\conj{\|x_1\|_1,\|x_2\|_2}$ donde $x=(x_1,x_2)$.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Si dos normas $\|.\|$ y $\|.\|_0$ en un espacio vectorial $X$ son equivalentes, demuestre
+  que $\|x_n-x\|\rightarrow 0 $ implica $\|x_n-x\|_0\rightarrow 0$.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Un espacio métrico $X$ es localmente compacto si cada punto de $X$ tiene una vecindad 
+  compacta. Demuestre que un espacio métrico compacto $X$ es localmente compacto.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Si $X$ es un espacio métrico compacto y $M \subseteq X$ es cerrado, demuestre que $M$ 
+  es compacto.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Si $X$ y $Y$ son espacios vectoriales de dimensión finita y $T:X\rightarrow Y$ (lineal) es uno a uno.
+  Demuestre que $dimX\leq dimY$
+\end{ejercicio}
+
+\chapter{Tercer Parcial}
+
+\section{Examen}
+
+\begin{ejercicio}
+  Si $x$ y $y$ son vectores diferetes en un espacio vectorial $X$ de dimensión finita. Demuestre 
+  que existe un funcional lineal $f$ en $X$ tal que $f(x) \not = f(y)$.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Si $X$ es un espacio normado y $dim X = \infty$, demuestre que el espacio dual 
+  $X'$ no es idéntico al espacio dual algebraico $X*$.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Demuestre que dos funcionales lineales $f_1 \not = 0$ y $f_2 \not = 0$
+  definidos en el mismo espacio vectorial tales que sus espacios nulos son iguales,
+  son proporcionales.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Sea $f_1 \not = 0$ un funcional lineal en el espacio vectorial $X$ y $x_0$ un elemento fijo 
+  de $X-N(f)$. Demuestre que $\forall x \in X$, $x=\alpha x_0 + y$ donde $y \in N(f)$.
+\end{ejercicio}
+
+\begin{ejercicio}
+  Sea $T:l^{\infty}\rightarrow l^{\infty}$ definido por $T_x=(\frac{x_i}{i})$ donde $x=(x_i)$.
+  Demuestre que $R(T)$ no es cerrado.
+\end{ejercicio}
+
+%% ============================================================
+%%  ÍNDICE ANALÍTICO
+\printindex
+
+\end{document}
