@@ -342,7 +342,7 @@ Lo más que se puede hacer es graficar la distribución de un momento específic
 ahí no tendría mucho sentido ni aporte, admeás de que lo hace parecer como si quisiera uno forzar
 los usos y costumbres de la estadística usual.
 
-\begin{definicion}[Función Media]
+\begin{definicion}[\termino{Función Media}]
   \[ \mu_{x_t}=E(x_t)=\int_{-\infty}^{\infty}xf_t(x)dx\]
 \end{definicion}
 $E$ es el operador de valor esperado que vuelve de probabilidad con el mismo significado como
@@ -362,6 +362,34 @@ lo que en teoría ha causado o repercutido dicho momento.
 \end{ejemplo}
 Notése que al ser una recta, esa última media no está acotada por arriba, por lo que podría
 no ser finita, algo que impediría la existencia de varianza en la distribución. 
+
+\begin{definicion}[\termino{Función de Autocovarianza}]
+  \[\gamma_x(s,t)=E[(x_s-\mu_s)(x_t-\mu_t)] \]
+\end{definicion}
+Se mantiene la autocovarianza bajo la idea de del segundo momento de centralidad, o un producto para constuir
+un área esperada alrededor del primer momento. En particular, mide la dependencia lineal entre dos momentos.\\
+Una serie suave va a tomar valores grandes de $\gamma$ en momentos muy separados entre si, mientras que una serie
+de mcuhos cambios bruscos y repentienos va a tomar valores muy cercanos a cero o suficientemente bajos. De hecho, el concepto
+de autocovarianza se va reformular en base a la "estacionariedad" y precisamente, la distancia entre puntos marcará
+la autocovarianza de la serie de tiempo.\\
+Recordemos $E(xy)$ de normal en teoría de probabilidad mide cuánto varían conjuntamente de media $X$ y $Y$. Es una media
+de varianza para la distribución conjunta.\\
+\begin{observacion}
+  Si $\gamma_x(s,t)=0$\\
+  Implica una falta de dependencia lineal, pero no una ausencia total de factores de dependencia.
+  La igualdad estricta a 0 pues signifca una ortogonalidad. A menos de que ambos operan iid normales,
+  entonces el 0 significa independencia.
+\end{observacion}
+
+\begin{ejemplo}
+  Tomando $w_t~N(0,\sigma^2)$ de \cref{ej:ruido}\\
+  $\sigma_w(s,t)=E[(w_s-\mu_s)(w_t-\mu_t)]$\\
+  $E[(w_s)(w_t)]$\\
+  Si $s=t$ queda claro que $E[(w_s)(w_t)]=\sigma^2$ por teoría de probabilidad.
+\end{ejemplo}
+Cuando $s\not =t$, al ser pares al azar (no hay correlación) y por otro resultado de probabilidad, 
+como las medias de los calores del ruido blanco no varían, entonces $E[(w_s)(w_t)]=0$.
+
 
 \section{Ejercicios}
 \begin{ejercicio}
