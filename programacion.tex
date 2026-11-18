@@ -323,10 +323,12 @@ al menos al momento de hacer los apuntes. Esto también es algo separado de mis 
 documentación, pero creo este es un posible espacio apropiado para revisar y exponer mucho de lo visto y entendido en
 dichos proyectos. Solo quiero remarcar que las definiciones no son propiamente formales y probablemente falte detalle
 y propiedad que habría en los de matemáticas.
+
+\chapter{Memoria}
+
 \section{Punteros}
 
-
-\begin{definicion}[Stack]\label{def:stack}
+\begin{definicion}[\termino{Stack}]\label{def:stack}
   .\\
   \begin{itemize}
     \item Sigue LIFO estricto
@@ -335,7 +337,7 @@ y propiedad que habría en los de matemáticas.
   \end{itemize}
 \end{definicion}
 
-\begin{definicion}[Heap]\label{def:heap}
+\begin{definicion}[\termino{Heap}]\label{def:heap}
   .\\
   \begin{itemize}
     \item Memoria dinámica para cuando se desarmen los datos o cuando tienen que vivir más allá de una memoria
@@ -367,7 +369,76 @@ referencia del puntero, que es un puntero de un puntero. \\
 Cuando dos punteros apuntan al mismo bloque de memoria, si se restan, retornan la cantidad de elementos entre ellos,
 no de bytes.
 
+\section{Memory Pool}
 
+Los contenidos aquí fueron recompilados al elaborar un proyecto de alocación de memoria, que surgió 
+tras una entrevista para una vacante de ingeniero en sistemas. 
+Parte de la escencia del proyecto era entender cómo funciona bien la administración y reserva de memoria, elaborando algo
+que pudiera servir para más proyectos de fondo trabajando C++. 
+
+\begin{definicion}[\termino{Memory Pool}]
+  Sirve como un gestor de memoria. Reserva "bloques" que vendrían a ser espacios de memoria contiguos de un determinado tamaño
+  especifico y puede guardar cosas en estos. A medida que se requieren guardar más cosas, puede crear más bloques si son requeridos
+  o reasignar a bloques o espacios de bloques ya vacíos. El manejo de vaciar y asignar valores a los bloques es parte de la memory 
+  pool que preferentemente trabaj con $templates$ para garantizar poder guardar distintos tipos de información en la misma memoria. 
+\end{definicion}
+El sistema en el que se sabe qué bloques están ocupados y cuáles vaciados es a través de punteros de manera similar a cómo funciona 
+una $linked list$ solo que los nodos se definen dentro de la propia clase de la memory pool y están contenidos dentro de los bloques 
+de memoria para que el coste a nivel memoria de tener el manejo de espacios sea cero. Como si prestaras la casa a quien la vende en 
+lo que se vende.\\
+Para reservar memoria que pueda ser usada después puede hacerse con operadores de $std::byte$ o $char$. En C se usaba $char$ precisamente
+porque uno equivale a un $byte$, pero C++ moderno ya cuenta con la implementación dedicada de $std::byte$ como tipo justo para estas operaciones
+de memoria. Otra opción es el operador $new$ que también reserva memoria, pero debe usarse de manera particular para no generar memoria adicional,
+ya que normalmente $new$ tiene que ver con punteros, al menos es el uso con el que yo estaba familiarizado. Lo clave es hacerlo sin llamar
+un constructor\\
+Parte de lo que se hace es garantizar que la memoria contigua que se reserva sea de especificaciones adecuadas, que sea 
+"alindeada", que significa que los bloques sean del tamaño necesario para el tipo de dato, sabemos que no se debe reservar lo mismo para
+un $integer$ que para un $double$ o un $long long$. 
+
+\begin{definicion}[$size\_t$]
+  Es una manera particular de C++ para indicar que hablamos de un entero que es siempre positivo. Normalmente se usa para 
+  contar bytes, tamaños o para manejo de índices.
+\end{definicion}
+
+\begin{definicion}[$new(size\_t bytes)$]
+  A diferencia de $new T()$ , este no llama al constructor de $T$ precisamente porque no se le está dando un tipo concreto 
+  al que declarar. Solo pide al sistema una cantidad $size\_t$ de $bytes$ sin usar.
+\end{definicion}
+
+\begin{definicion}[$alignof$]
+  Sirve para que la reservación de memoria se haga una dirección adecuada y cuidando las direcciones de tamaños $2^{n+1}$ 
+  a las que están las computadoras acostumbradas a leer. Si se descuadran las posiciones de las reservas, puede haber
+  problemas al momento de la lectura de los datos. 
+\end{definicion}
+
+\begin{definicion}[$static\_cast$]
+  Funciona para convertir un tipo de dato a otro, de manera que a nivel compilación, entienda que la manera en que 
+  se declara una variable es distinto al que se busca tenerla. Convierte de un tipo a otro de manera muy segura siempre
+  que se tenga claro y quiere hacer eso durante la compilación.
+\end{definicion}
+
+\begin{lstlisting}[language=C++, caption={static\_cast}]
+//Ejemplos de static_cast usados en memory pool
+memory_block_ = static_cast<char*>(::operator new(total_bytes_)); //1
+
+std::cout<<static_cast<void*>(memory_block_); //2
+
+//3
+void* ptr = get_memory();
+void* next_chunk = ptr + 32;
+\end{lstlisting}
+
+En (1), el opoderador new reserva una cantidad de bytes y retorna un puntero de tipo void*,
+que es un puntero de tipo genérico. $static_cast$ se asegura que ese puntero de tipo ambiguo 
+sea considerado como uno de tipo $char$ ya que este es más apropiado de utilizar para operaciones.\\
+(2) Es porque si se quisiera imprimir el puntero de tipo $char$, me daría un error porque lo guardé ahí
+no tiene por qué ser texto, así que el programa tronaría, pero si se específica que se trata de un puntero 
+ambiguo, entonces simplemente se imprimiría su dirección de memoria.\\
+La importancia de pasar de $void*$ a $char$ podemos revisalra en (3). Si quisieramos hacer aritmética de punteros,
+no serviría nada porque no hay tamaños definidos para los punteros sin tipo, hay que tenerlo en un tipo para poder
+operarlo propiamente. Convenientemente el tipo es $char$, que tiene justo tamaño 1.\\
+\textbf{Nota:} A día de hoy, lo mejor es utilizar $std::byte$ en lugar de $char$ para estos propósitos justo porque
+está diseñado para combatir ese uso un poco extraño que se había heredado de C.
 \printindex
 
 \end{document}
