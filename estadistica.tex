@@ -454,41 +454,215 @@ $P(A \cap B)=P(B)P(A)$
   \end{itemize}
 \end{teorema}
 
+Una variable aleatoria $X$ es continua $F_X(x)$ es función continua. $X$ es una variable aleatoria discreta si 
+$F_X(x)$ es una función discreta o a pares.
 
+\begin{definicion}
+  Una variable aleatoria $X$ y $Y$ está idénticamente distribuidas si $\forall A \in \sigma$
+  $P(X\in A)=P(Y\in A)$.
+\end{definicion}
 
-\begin{teorema}[Unicidad del límite]\label{thm:unicidad}
-  Si una sucesión converge, su límite es único.
+\begin{teorema}
+  $X$ y $Y$ variables aleatorias se distribuyen idénticamente $\iff F_X(x)=F_Y(x) \quad \forall x$ 
 \end{teorema}
 
-\begin{notademo}
-  La idea es suponer dos límites distintos y usar la desigualdad triangular
-  con $\eps = \abs{L-L'}/2$ para llegar a una contradicción.
-  Esta técnica se reutiliza en el \cref{cor:sumas}.
-\end{notademo}
+Varias de las pruebas estadísticas y teoremas juegan directa o indirectamente con la probabilidad acumulada para 
+analizar el tipo de distribución como pudiera serlo Kolmogrov-Smirnoff o $\chi^{2}$. Sin embargo, este tipo de 
+probabilidad puede ser insuficiente para describir otros aspectos de mucho mayor interés o describirlos puede ser 
+mucho más complicado, para eso se constuye otra serie de conceptos complementarios.
 
-\begin{proof}
-  Sean $L\neq L'$ dos límites de $(a_n)$ y tomemos $\eps=\tfrac{1}{2}\abs{L-L'}>0$.
-  Por la \cref{def:limite}, existen $N_1,N_2$ tales que
-  $\abs{a_n-L}<\eps$ si $n\ge N_1$ y $\abs{a_n-L'}<\eps$ si $n\ge N_2$.
-  Para $n\ge\max\{N_1,N_2\}$:
-  \begin{align}
-    \abs{L-L'} &\le \abs{L-a_n}+\abs{a_n-L'} \label{eq:triangular}\\
-               &< 2\eps = \abs{L-L'},
-  \end{align}
-  lo cual es absurdo.
-\end{proof}
+\begin{definicion}
+  La función de probabilidad de masa es discreta y está dada por 
+  \[ f_X(x)=P(X=x) \]
+\end{definicion}
+Está probabilidad se refiere al 'tamaño del salto' de $F_X(x)$ en este caso.\\
+El ejemplo más clásico es el de la probabilidad geométrica\\
+$f_X(x)=P(X=x)=\left\{
+  \begin{array}{l}
+    (1-p)^{x-1}p \quad x\in \Z^{+}\\
+    0
+  \end{array}
+\right.$\\
+
+$f_X(x)$ es entonces el tamaño de de salto de la distribución de probabilidad acumulada
+de la variable aleatoria $X$.\\
+$P(a\leq x \leq b)=\sum_{k=a}^{b} f_X(k)=\sum_{k=a}^{b}(1-p)^{x-1}p$\\
+$P(x \leq b)=\sum_{k=1}^{b} f_X(k)=F_X(b)$\\
+
+Es fácil ver cómo en este caso funciona como un salto y al observar el cómo sumar los valores hasta un punto 
+nos da la acumulada hasta ese punto nos invita a pensar en uno de los resultados más claves. Pareciese que la
+distribución de masa y acumulada en un caso continuo pudieran acoplarse al teorema fundamental del cálculo,
+que revisando los límites la clave está en revisar.\\
+
+$P(X=x)\leq P(x-\epsilon < X \leq x)=F_x(x)-F_X(x-\epsilon)$\\
+$P(X\leq x)=F_X(x)=\int_{-\infty}^{\infty}f_X(t)dt$\\
+$\frac{d}{dx}F_X(x)=F_X(x)$ por T.F.C.
+
+\begin{definicion}[\termino{Función de Densidad de Probabilidad}]
+  $f_X(x)$ de una variable aleatoria continua $X$ es la función que satisface
+  \[ F_X(x)=\int_{-\infty}^{\infty}f_X(t) dt \quad \forall x\]
+\end{definicion}
+De manera análoga en el caso discreto debe cumplirse para la sumatoria en lugar de la integral.\\
+Además de esto, de los axiomas de probabilidad e inferencia detrás de la construcción de la función de 
+densidad, podemos intuitivamente entender.
+\begin{teorema}
+  $f_X(x)\geq 0 \quad \forall x \quad \iff$
+  \begin{itemize}
+    \item $f_X(x) \geq 0 \quad \forall x$
+    \item $\sum_{x}f_X(x)=1$
+    \item $\int_{-\infty}^{\infty}f_X(x)dx=1$
+  \end{itemize}
+\end{teorema}
+Estos resultados son análogos en el caso discreto, prácticamente solo cambiando integral por sumatoria.\\
+Uno de los conceptos más importantes son las transformaciones, prácticamente todo se fundamente ahí. En general,
+uno de los conceptos más importantes en matemática es el de la 'invarianza', qué es revisar cuánto podemos deformar 
+o transformar algo conservando sus propiedades o cuáles son las que permanecen tras una cierta transformación.\\
+El por qué queremos transformar yace en las facilidades o practicidades que esto brinda. La más conocida es la
+normalización o estandarización de las variables que transforma la distribución normal en una cierta escala a una
+normal estándar de media 0 y desviación 1. Pero cómo está hay montones de transformaciones que sean implícita o 
+excplícitamente.\\
+Si $X$ es una variable aleatoria con $F_X(x)\Rightarrow$ toda función $g(x)$ de $X$, es también una variable aleatoria 
+que podemos describir en términos de $X$ para todo evento $A$ del espacio muestral $\Omega$. Donde normalmente condisderamos
+$g(x):x\rightarrow y $ como $P(g(x)\in A)$ donde $g^{-1}(\conj{y})=\conj{x\in X: g(x=y)}$.\\
+$P(g(x)\in A)=P(X\in g^{-1}(A))$\\
+$f(g(y))=P(g=y)=\sum_{x\in g^{-1}(y)}P(X=x)$\\
+$\quad =\sum_{x\in g^{-1}(y)}f_X(x) \quad y\in Y$.\\
+
+Una de las transformaciones con las que indirectamente se juega mucho y que sirve mucho para teoría y otras 
+cuestiones es la uniforme, que es aquella donde todo tiene la misma probabilidad de ocurrir. 
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[scale=1.2]
+    \draw[->] (-0.3,0) -- (3,0) node[right] {$x$};
+    \draw[->] (0,-0.3) -- (0,2.5) node[above] {$y$};
+    \draw[domain=0:3, smooth, thick, blue] plot (\x, 1);
+  \end{tikzpicture}
+  \caption{Gráfico de función de masa uniforme}
+\end{figure}
+
+Un ejercicio útil es el de dibujar la función de probabilidad acumulada de esta función.
+
+\begin{ejemplo}[tranformación logarítimica]
+  Sea $g(X) = -log(X)$\\
+  $\frac{d}{dx}g(x)=\frac{d}{dx}(-log(x))=\frac{-1}{x}<0 \quad \forall x \in (0,1)$\\
+  $g$ entonces es decreciente. Además notemos que el rango de $X$ es $[0,1]$ y el de 
+  $-log(x)$ es $(0,\infty)$\\
+  para $y=-log(x), \quad y>0$ $x=e^{-y}\Rightarrow g^-1(y)=e^{-y}$\\
+  $F_Y(y)=1-F_X(g^-1(y))=1-F_X(e^{-y})=1-e^{-y}=F_X(y)=x$
+\end{ejemplo}
+Es un ejemplo de lo que ocurre con las funciones probabilidad acumulada en el caso concreto de 
+la transformación logarítimica que es una de las que al final terminará siendo de las más usados por 
+temas de escalabilidad y ajuste de distintas dimensiones. Este ejemplo también sirve para ilustrar 
+más útilidades de un análisis de derivadas al momento de evaluar o considerar tranformaciones. 
+Para el uso típico de pruebas no se hace porque ya se tienen varios resultados, pero si se busca entender
+el fondo y apreciar resultados así como revisar los teoremas de construcción de las principales distribuciones
+y tipos de variables.
+
+\begin{teorema}
+  Inducir $f_Y(y)$ dado $f_X(x)$ es continua y $g^{-1}(y)$ tiene derivada continua en $Y$. 
+  \[f_y=\left\{
+  \begin{array}{l}
+    F_X(g^{-1}(y)) | \frac{d}{dy} g^{-1}(y) | y\in Y \\
+    0 \quad e.c.o.c.
+  \end{array}
+\right.\]
+\end{teorema}
+
+\begin{ejemplo}[Tranformación Cuadrada]
+  Suponga que $X$ es una variable aleatoria continua para $y>0 \Rightarrow$ la función de 
+  acumulación $Y=X^2$ es\\
+  $F_Y(y)=P(y\leq Y)=P(X^2\leq Y)=P(-\sqrt{y}\leq X \leq \sqrt{y})=F_X(\sqrt{y})-F_X(-\sqrt{y})$ sería entonces la función 
+  de probabilidad acumulada.\\
+  $f_Y(y)=\frac{1}{2\sqrt{y}}(f_X(\sqrt{y})+f_X(-\sqrt{y}))$ integrando lo anterior.
+\end{ejemplo}
+
+\chapter{ANOVA}
+
+\section{Bases}
+
+ANOVA estima medias de varias poblaciones a veces con hipótesis de normalidad. 
+El concepto escencial de ANOVA yace en la pregunta ¿Cómo consigo la mayor cantidad de información en la 
+mayor cantidad de poblaciones con la menor cantidad de observaciones?\\
+Para resolver la pregunta se plantea un modelo similar al que se utiliza en regresiones; 
+$y_{ij}=\theta_i + \epsilon_{ij}$ con $i=1,...,k$ y $j=1,...,n_i$ comunmente entendido como $k$ tratamientos 
+y $n_i$ como las observaciones del $i$-ésimo tratamiento. 
+
+\begin{table}[H]
+  \centering
+  \caption{Ordenamiento usual de observaciones en ANOVA}
+  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}@{}}
+    \toprule
+    $T_1$ & $T_2$ & $...$ & $T_k$ \\
+    \midrule
+   -$y_{11}$ & $y_{21}$ &  $...$ & $y_{k1}$\\
+    $y_{12}$ & $y_{12}$ &  $...$ & $y_{k2}$\\
+    $...$ &  $...$ &  $...$ & $...$ \\
+    $y_{1n_1}$ & $y_{2n_2}$ & $...$ & $y_{kn_k}$ \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{observacion}
+  En el modelo se asumen los errores como normales porque si $\epsilon_{ij}~N(0,1) \Rightarrow$\\
+  $E(Y_{ij})=E(\theta_i + \epsilon_{ij})$\\
+  $=E(\theta_i)+E(\epsilon_{ij})$\\
+  $=E(\theta_i)$\\
+  $\therefore E(y_ij)=E(\theta_i)$\\
+  Donde $\theta_i$ son las medias de los tratamientos, que se presentan más claramento como $y_{ij}=\mu+\tau_i+\epsilon_{ij}$
+\end{observacion}
+  De $y_{ij}=\mu+\tau_i+\epsilon_{ij}$, $\mu$ es la media general de los efectos, $\tau_i$ es el efecto de los tratamientos. 
+  La desviación es constante por los tratamientos. No podemos estimar $\mu$ y $\tau_i$ por seprado ya que se irrumpe por un problema de 
+  'indeticafibilidad'. No sé si sea una traducción válida que exista en el español, pero se refiere a un problema dónde no se pueden 
+  identificar, ergo, separar las estimaciones de manera adecuada. 
+\begin{observacion}[Hipótesis ANOVA]
+  El modelo base del análisis está dado por
+  \[ y_{ij}=\theta_i + \epsilon_{ij} \]
+
+  \begin{itemize}
+    \item $\epsilon_{ij}~ N(0, \sigma^2)$ donde $\sigma < \infty$
+    \item $\epsilon_{ij}$ son independientes; $cov(\epsilon_{ij},\epsilon_{i'j'})=0 \quad \forall i, i', j, j'$ a menos que $i=i' \wedge j=j'$
+    \item Homogeneidad de varianzas $\sigma_i^2=\sigma^2 \quad \forall i$
+  \end{itemize}
+\end{observacion}
+
+Sin independencia y normalidad solo podríamos hacer estimación puntual que minimice varianza. siempre
+que tengamos tamaños de muestra razonables y poblaciones no muy asimétricas, se puede llegar a hacer uso del 
+CLT. Para poblaciones no normales pueden llegar a hacerse uso de transformaciones y cosas no tan sencillas para
+poder seguir usando este método.\\
+La homogeneidad de varianzas garantiza el poder hacer uso de transformaciones no lineales para evitar 
+que no-violen las condiciones ANOVA. Por ejemplo, las transformaciones Box-Cox también garantizan robustez, 
+aparte de lo que se viene hablando.
+
+\begin{table}[H]
+  \centering
+  \caption{Hipótesis ANOVA}
+  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}
+                    >{\centering\arraybackslash}p{2.2cm}@{}}
+    \toprule
+    $H_0$ & $H_1$ \\
+    \midrule
+   -$\theta_i=0 \quad \forall i$ & $H_1=\exists i \not = j \quad | \theta_i \not = \theta_j$ \\
+    $\theta_i=\theta_i \quad \forall i$ & \\
+    $\theta_1=\theta_2=...=\theta_k$ & \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+El interés de una prueba ANOVA es medir el efecto, muchas veces solo si existe.\\
+Existe algo llamado 'contrastes' donde las hipótesis ANOVA pueden expresarse en 
+términos de combinaciones lineal para entender mejor las comparaciones o elaborar 
+hipótesis más específicas. Se usan empleando los conceptos clásicos de combinaciones lineales 
+$\sum a_it_i \quad | \quad \sum a_i=0$. Va muy de la mano con el enfoque unión-Intersección
+para diseño de hipótesis que tampoco se curbió. Hay un mundo de detalle en este campo pero no fue
+vital, normalmente con entender el concepto de particionar un conjunto basta.\\
 
 \begin{corolario}\label{cor:sumas}
   Si $a_n\to L$ y $b_n\to M$, entonces $a_n+b_n\to L+M$.
 \end{corolario}
-
-\begin{observacion}
-  La desigualdad \eqref{eq:triangular} también aparece en la prueba del
-  \cref{thm:unicidad}. Referencias automáticas: \cref{def:limite},
-  \cref{thm:unicidad}, \cref{cor:sumas}; en el PDF cada una es un enlace
-  clicable. Con \verb|\Cref| se escribe con mayúscula inicial al comienzo
-  de frase, y con \verb|\cpageref| podrías citar la página.
-\end{observacion}
 
 \begin{ejemplo}
   La sucesión $a_n=1/n$ converge a $0$: dado $\eps>0$ basta tomar
