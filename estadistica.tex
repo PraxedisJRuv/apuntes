@@ -236,6 +236,8 @@ la idea era generar una familiaridad con el lenguaje y notación para secciones 
   Usualmente $\Omega$ denota el espacio muestral, este sería el conjunto de todos los posibles resultados. 
   Puede ser numerable o no numerable. 
 \end{definicion}
+La manera en que popularmente se entiende a los espacios muestrales numerables y no-numerables. Es que los numerables
+son espacios muestrales de variables cualitativas, mientras que el no-numerable es para variables cuantitativa. 
 
 \begin{definicion}[Eventos Disjuntos]
   Dos eventos $A$ y $B$ son disjuntos (mutuamente exluyentes) si 
@@ -256,6 +258,12 @@ trabajar de forma distinta, ahora desde un enfoque de las frecuencias en lugar d
 Otro ejemplo pudiera ser la glucosa, que se parte en bajo, normal, prediabético y diabético. Categorías para valores
 de la variable continua de glucosa en sangre que se parten en 4 categorías interpretables.
 
+\begin{definicion}[Funciones]
+  Es una regla que asigna a cada elemento de un conjunto inicial (Dominio) un único elemento de un conjunto 
+  final (codominio). La denotamos como $f(x)=y$ donde $f:X\rightarrow Y$ denota cuál conjunto es el dominio ($X$) y 
+  cuál el codominio ($Y$), de dónde a donde va y cómo asigna un elemento $x$ a uno $y$.
+\end{definicion}
+
 \section{Probabilidad}
 Los conceptos previos más escenciales y necesarios de la teoría de probabilidad para tener nociones de 
 lo que se realiza en estadística.\\
@@ -263,6 +271,7 @@ La escencia de la probabilidad es que si algo puede describirse en terminos prob
 analizarlo estadísticamente. La estadística por si sola es el mero análisis descriptivo de los datos más laxo posible,
 para poder inferir requerimos de la probabilidad y para ello se requiere que la muestra obtenida se haya obtenida
 a partir del azar. Sin Aleatoriedad en el muestreo, no hay nada de lo que se revisa a continuación.
+
 \begin{definicion}[Axiomas de Kolmogrov]\label{def:Kolmogrov}
   Dado esp. muestral $\Omega$ y $\sigma$-álgebra (partición) de $\Omega$,
     una función de probabilidad es una función $P$ con dominio $\sigma$
@@ -275,7 +284,10 @@ a partir del azar. Sin Aleatoriedad en el muestreo, no hay nada de lo que se rev
 \end{definicion}
 
 "frecuencia" es una forma particular de describir una probabilidad, la cual se entiende como la creencia en que un
-evento pueda ocurrir.
+evento pueda ocurrir. Definir la función de probabilidad es propio de un probabilista, no de un estadista. 
+Es importante hacer el hincapié que teoría de probabilidad es distinto de la estadística. Esta última toma montones 
+de resultados y herramientas de otros campos, existe en un terreno ambigüo entre la matemática pura y aplicada, mientras que
+la teoría de probabilidad está más cerca de el área pura, en particular cuando se abarca desde teoría de la medida.
 
 \begin{ejemplo}
   Ejemplo de la moneda \\
@@ -362,7 +374,7 @@ o usar probabilidad condicional.
 \end{ejemplo}
 
 \begin{definicion}
-  Si $A$ y $B$ son eventos en $S$ y $P(B)>0$ $\Rightarrow P(A|B)$\\
+  Si $A$ y $B$ son eventos en $\Omega$ y $P(B)>0$ $\Rightarrow P(A|B)$\\
   Donde la probabilidad condicional de $A$ dado $B$ es $P(A|B)=\frac{P(A\cap B)}{P(B)}$\\
 \end{definicion}
 
@@ -426,6 +438,41 @@ $P(A \cap B)=P(B)P(A)$
   \[ P_X(X=x_i)=P(\conj{\sigma_j \in \sigma: X(\sigma_j)=x_i}) \]
 \end{definicion}
 
+\begin{ejemplo}
+  Consideremos $X$ variable aleatoria como la cantidad de águilas que se pueden obtener en 3 volados, y sea 
+  $\omega$ nuestro espacio muestral, en este caso sería todos los posibles resultados de hacer tres volados, donde
+  $\sigma$ sería un único de estos resultados (nuestra partición del espacio muestral).
+  Abreviemos águila como $A$ y sello como $S$.
+
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lcccccccc@{}}
+    \toprule
+    $\sigma$ & AAA & AAS & ASA & SAA & ASS & SAS & SSA & SSS \\
+    \midrule
+    $X(\sigma)$ & 3 & 2 & 2 & 2 & 1 & 1 & 1 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+  \begin{table}[H]
+  \centering
+  \begin{tabular}{@{}l >{\centering\arraybackslash}p{1cm}
+                    >{\centering\arraybackslash}p{1cm}
+                    >{\centering\arraybackslash}p{1cm}@{}}
+    \toprule
+    $\sigma$ & AAA & AAS & ASS \\
+    %$\sigma$ & AAA & AAS & ASA & SAA & ASS & SAS & SSA & SSS \\
+    \midrule
+    $X(\sigma)$ & 3 & 2 & 1 \\
+    %$X(\sigma)$ & 3 & 2 & 2 & 2 & 1 & 1 & 1 & 0 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\end{ejemplo}
+
+
 \begin{definicion}
   La función de distribucipon acumulada (cdf en inglés) de una variable aleatoria $X$ denotada por 
   $F_{X}(x)$ es 
@@ -433,7 +480,8 @@ $P(A \cap B)=P(B)P(A)$
 \end{definicion}
 
 \begin{ejemplo}
-  La función de probabilidad de tres monedas, donde $X=$cara puede describirse como\\
+  Retomando el ejemplo de los 3 volados, donde $X=$águila puede describirse como
+  
   $F_X(x)=\left\{
   \begin{array}{l}
     0 \quad -\infty \leq x > 0 \\
@@ -577,6 +625,7 @@ y tipos de variables.
   $f_Y(y)=\frac{1}{2\sqrt{y}}(f_X(\sqrt{y})+f_X(-\sqrt{y}))$ integrando lo anterior.
 \end{ejemplo}
 
+
 \chapter{ANOVA}
 
 \section{Bases}
@@ -617,6 +666,25 @@ y $n_i$ como las observaciones del $i$-ésimo tratamiento.
   La desviación es constante por los tratamientos. No podemos estimar $\mu$ y $\tau_i$ por seprado ya que se irrumpe por un problema de 
   'indeticafibilidad'. No sé si sea una traducción válida que exista en el español, pero se refiere a un problema dónde no se pueden 
   identificar, ergo, separar las estimaciones de manera adecuada. 
+
+  \begin{definicion}[Identificable]
+    Un parámetro $\theta$ de $\conj{f(x|\theta): \theta \in \Theta}$ es identificable si distintos valores de $\theta$ corresponder 
+    a distintas funciones de densidad de probabilidad o funciones de masa de probabilidad. Es decir, si 
+    $\theta \not = \theta '\Rightarrow f(x|\theta)\not = f(x|\theta ')$ para el mismo $x$.
+  \end{definicion}
+Los problemas de identificabilidad está determinada por el modelo, no los parámetros. Si no es identificable es complicado distinguir
+y hacer inferencia porque si $f(x|\theta)=f(x|\theta ') \Rightarrow$ cualquier observación se ve igual, así que no sabemos si $\theta$
+o $\theta '$ es el parámetro original de la misma población generan la misma función de máxima verosímilitud. 
+Hasta este punto todo modelo era identificable, una normal hecha con una media y varianza que podemos distiguir. 
+El modelo del ANOVA es muy intuitivo pero no es identificable.
+\begin{observacion}
+  Una manera de entender cuál es el origen del problema de identificabilidad revisando $y_{ij}=\mu + \tau_i + \epsilon_{ij}$ 
+  hay $k+1$ parámetros pero solo hay $k$ medias, donde podemos entender la estimación de las $k$ medias de los $k$ tratamientos
+  $E(Y_{ij})$ para $i=1,...,k$, entonces existe un elemento de $(\mu, \tau_1, ..., \tau_k)$ con distribucion repetida porque son 
+  las medias de tratamientos y la población general dentro del modelo, por eso $\sum_{i=1}^{k} \tau_i=0$ es una hipótesis para garantizar
+  la estimación de $k$ parámetros
+\end{observacion}
+
 \begin{observacion}[Hipótesis ANOVA]
   El modelo base del análisis está dado por
   \[ y_{ij}=\theta_i + \epsilon_{ij} \]
@@ -659,15 +727,6 @@ hipótesis más específicas. Se usan empleando los conceptos clásicos de combi
 $\sum a_it_i \quad | \quad \sum a_i=0$. Va muy de la mano con el enfoque unión-Intersección
 para diseño de hipótesis que tampoco se curbió. Hay un mundo de detalle en este campo pero no fue
 vital, normalmente con entender el concepto de particionar un conjunto basta.\\
-
-\begin{corolario}\label{cor:sumas}
-  Si $a_n\to L$ y $b_n\to M$, entonces $a_n+b_n\to L+M$.
-\end{corolario}
-
-\begin{ejemplo}
-  La sucesión $a_n=1/n$ converge a $0$: dado $\eps>0$ basta tomar
-  $N>1/\eps$.
-\end{ejemplo}
 
 \section{Código}
 
