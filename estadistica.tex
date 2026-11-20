@@ -446,26 +446,12 @@ $P(A \cap B)=P(B)P(A)$
 
   \begin{table}[H]
   \centering
+  \label{tab:volados}
   \begin{tabular}{@{}lcccccccc@{}}
     \toprule
     $\sigma$ & AAA & AAS & ASA & SAA & ASS & SAS & SSA & SSS \\
     \midrule
     $X(\sigma)$ & 3 & 2 & 2 & 2 & 1 & 1 & 1 & 0 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-  \begin{table}[H]
-  \centering
-  \begin{tabular}{@{}l >{\centering\arraybackslash}p{1cm}
-                    >{\centering\arraybackslash}p{1cm}
-                    >{\centering\arraybackslash}p{1cm}@{}}
-    \toprule
-    $\sigma$ & AAA & AAS & ASS \\
-    %$\sigma$ & AAA & AAS & ASA & SAA & ASS & SAS & SSA & SSS \\
-    \midrule
-    $X(\sigma)$ & 3 & 2 & 1 \\
-    %$X(\sigma)$ & 3 & 2 & 2 & 2 & 1 & 1 & 1 & 0 \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -481,7 +467,7 @@ $P(A \cap B)=P(B)P(A)$
 
 \begin{ejemplo}
   Retomando el ejemplo de los 3 volados, donde $X=$águila puede describirse como
-  
+
   $F_X(x)=\left\{
   \begin{array}{l}
     0 \quad -\infty \leq x > 0 \\
@@ -493,6 +479,21 @@ $P(A \cap B)=P(B)P(A)$
 \right.$
 \end{ejemplo}
 
+Pudimos organizar \cref{tab:volados} como 
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{@{}lcccccccc@{}}
+    \toprule
+    $x$ & 0 & 1 & 2 & 3 \\
+    \midrule
+    $P_X(X=x)$ & $\frac{1}{8}$ & $\frac{3}{8}$ & $\frac{3}{8}$ & $\frac{1}{8}$\\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Lo cual es un formato más intuitivo en el cual entender cómo se estructuró la función de probabilidad acumulada.
+Y también la función propia de distribución de probabilidad que se revisará un poco más adelante
 \begin{teorema}
   $F(x)$ es una función de probabilidad acumulada $\iff$
   \begin{itemize}
@@ -504,6 +505,14 @@ $P(A \cap B)=P(B)P(A)$
 
 Una variable aleatoria $X$ es continua $F_X(x)$ es función continua. $X$ es una variable aleatoria discreta si 
 $F_X(x)$ es una función discreta o a pares.
+
+\begin{ejemplo}[Caso Binomial]
+  $P(X=x)=(1-p)^{x-1}p$\\
+  $P(X\leq x)=\sum_{i=1}^{x}P(X=i)=\sum_{i=1}^{x}(1-p)^{i-1}p$
+  $\Rightarrow F_X(x)=1-(1-p)^{x}$
+\end{ejemplo}
+Este caso concreto puede corrobarse con el ejercicio de la moneda y volados y lo que se había presentado
+anteriormente. Recordando claro que se uso una moneda balanceada, es decir, con $p=\frac{1}{2}$.
 
 \begin{definicion}
   Una variable aleatoria $X$ y $Y$ está idénticamente distribuidas si $\forall A \in \sigma$
@@ -569,9 +578,9 @@ El por qué queremos transformar yace en las facilidades o practicidades que est
 normalización o estandarización de las variables que transforma la distribución normal en una cierta escala a una
 normal estándar de media 0 y desviación 1. Pero cómo está hay montones de transformaciones que sean implícita o 
 excplícitamente.\\
-Si $X$ es una variable aleatoria con $F_X(x)\Rightarrow$ toda función $g(x)$ de $X$, es también una variable aleatoria 
+Si $X$ es una variable aleatoria con $F_X(x)\Rightarrow$ toda función $g(x)=y$ de $X$, es también una variable aleatoria 
 que podemos describir en términos de $X$ para todo evento $A$ del espacio muestral $\Omega$. Donde normalmente condisderamos
-$g(x):x\rightarrow y $ como $P(g(x)\in A)$ donde $g^{-1}(\conj{y})=\conj{x\in X: g(x=y)}$.\\
+$g(x):x\rightarrow y $ como $P(g(x)\in A)=P(y\in A)$ donde $g^{-1}(\conj{y})=\conj{x\in X: g(x=y)}$.\\
 $P(g(x)\in A)=P(X\in g^{-1}(A))$\\
 $f(g(y))=P(g=y)=\sum_{x\in g^{-1}(y)}P(X=x)$\\
 $\quad =\sum_{x\in g^{-1}(y)}f_X(x) \quad y\in Y$.\\
@@ -624,7 +633,253 @@ y tipos de variables.
   de probabilidad acumulada.\\
   $f_Y(y)=\frac{1}{2\sqrt{y}}(f_X(\sqrt{y})+f_X(-\sqrt{y}))$ integrando lo anterior.
 \end{ejemplo}
+Este ejemplo particular es de importancia porque la distribución ji-cuadrada viene precisamente de elevar una normal estándar 
+al cuadrado, que es el ejemplo a continuación. Ese hecho es de vital importancia para entender la mayoría de fundamentos de las pruebas 
+paramétricas, ya que se construyen realizando operaciones sobre normales, las cuales van consturyendo las dsitribuciones especiales
+como la ji-cuadrada, t-student, F-Fisher.
 
+\begin{ejemplo}[Relación normal-$\chi^{2}$]
+  Sea $X$ la distribución normal, entonces su densidad está dada por 
+  $f_X(x)=\frac{1}{\sqrt{2\pi}}e^{-\frac{x^2}{2}}$ con $-\infty<x<\infty$\\
+  Consideremos $g(x)=x^2$, sabemos que es monótona en $(-\infty,0),(0,\infty)$, así que consideremos $Y=(0,\infty)$\\
+  $\Rightarrow f_Y(y)=\frac{1}{\sqrt{2\pi}}e^{\frac{-(-\sqrt{y})^{2}}{2}}(|\frac{-1}{1+2\sqrt{y}}|+|\frac{1}{2\sqrt{y}}|)$\\
+  $\quad = \frac{1}{\sqrt{2\pi}} \frac{1}{\sqrt{y}}e^{-\frac{y}{2}}$ en $0<y<\infty$\\
+  Esa función de densidad de probabilidad es la misma que la de una ji-cuadrada de un grado de libertad.
+\end{ejemplo}
+
+Otro resultado escencial para entender las distintas pruebas estadísticas es sobre la distribución uniforme,
+que ya se había mencionado que funciona como una distribución de 'transición' durante algunos procesos.
+
+\begin{teorema}
+  Sea $X$ variable aleatoria con función de probabilidad acumulada $F_X(x)$ y define $Y$ como
+  $Y=F_X(x)$ $\Rightarrow Y$ se distribuye uniformemente en $(0,1)$. Es decir, 
+  $P(Y\leq y)=y$ para $0<y<1$.
+\end{teorema}
+
+\chapter{Estimación}
+
+\section{Valor Esperado}
+
+\begin{definicion}
+  \[E(g(x))=\left\{
+  \begin{array}{l}
+    \int_{- \infty}^{\infty}g(x)f_{X}(x)dx \quad X \cong \R\\
+    \sum_{x\in X}g(x)f_{X}(x) \quad X \cong \N
+  \end{array}
+\right.\]
+\end{definicion}
+
+El valor esperado es tal vez el concepto más importante de la teoría de probabilidad que 
+la estadística inferencial hace uso. Se puede entender a la estimación como ese un análisis de valores 
+esperados. La estimación puntual no es tan usada en investigación porque no es algo que se preste a una 
+interpretabilidad clara, pero su formato como estimación de intervalo que posee niveles de confianza y se 
+alinea apropiadamente con las pruebas de hipótesis. 
+
+\begin{observacion}
+  si $E(g(x)) = \infty \Rightarrow \not \exists E(g(x))$ 
+\end{observacion}
+
+Conocer las propiedades del valor esperado es de vital importancia para entender cualquier texto en estadística 
+o en cualquiera de sus ramas. Este es a fin de cuenta el concepto del que se establece la media, varianza, covarianza y 
+todos los conceptos que se discuten en cualquiera de las ramas y nichos específicos de la estadística, además de que sus
+modificaciones son a través de el esperado, modificaciones entendidos como la función media o función de covarianza en 
+análisis de series de tiempo, por mencionar alguno. 
+
+\begin{teorema}
+  Sea $X$ una variable aleatoria y sean $a,b$ y $c$ constantes $\Rightarrow g_1(x)$ y $g_2(x)$ con 
+  $E\in \R$.
+  \begin{itemize}
+    \item $E(ag_1(x)+bg_2(x)+c)=aE(g_1(x)+bE(g_2(x))+c)$
+    \item Si $g_1(x)\geq 0 \quad \forall x \Rightarrow E(g_1(X))\geq 0$
+    \item Si $g_1(x)\geq g_2(x) \quad \forall x \Rightarrow E(g_1(x))\geq E(g_2(x))$
+    \item Si $a \leq g_1(x)\leq b \quad \forall x \Rightarrow a \leq E(g_1(x))\leq b$
+  \end{itemize}
+\end{teorema}
+
+\section{Estimador}
+Previamente se discutió que el fundamento de la estadística inferencial es la estimación, el buscar describir una población 
+con una muestra. Estas estimaciones pueden ser puntuales como la media aritmética, o pueden ser en intervalos que cuando 
+trabajamos con hipótesis u otros factores, se convierten en intervalos de confianza. Cada tipo de estimación tiene su función 
+y sus matices. \\
+Un estimador puntual es una función $W(X_1,...,X_n)$ de una muestra. Cualquier estadístico en un estimador puntual.
+Usualmente se denota $W(x_1,...,x_n)$ como un valor estimado, mientras que $W(X_1,...,X_n)$ es un estimador, una función.
+Muchos estimadores se obtuvieron de manera intuitiva primero y después se vió que encajaban con la teoría propuesta, de hecho, 
+hay quienes recomiendan la intuición como la manera más eficiente de conseguir un estimador, claro que el problema se vuelve 
+el fundamento que le respalde, pero tal vez revisar que cumpla con condiciones es más sencillo que construirlo a partir de ellas.\\
+Como aquí ya comenzamos a hablar de manera mucho más formal sobre la muestra vale la pena remarcar el concepto.
+Las variables aleatorias $X_1,X_2,...,X_n$ son llamadas muestras aleatorias de tamaño $n$ de la población
+$f(x)$ si $X_1,X_2,...,X_n$ son variables aleatorias mutuamente independientes y la fdp o fmp para cada $X_i$
+es la propia $f(x)$. De manera alterna, $X_1,X_2...,X_n$ son llamadas variables aleatorias independientes e idénticcamente 
+distribuidas por $f(x)$, comúnmente abreviado como iid.
+
+\section{Método de Momentos}
+
+Los estimadores más usuales, comúnes y básicos vienen del método de momentos, además de que este método es pilar para todas 
+las disciplinas adyacentes de la estadística. Todo que tome algo de la estadística termina trabajando con el método de momentos
+así que conocerle y entender sus generalidades puede ser muy fructífero. 
+
+\begin{definicion}
+  Para cada entero $n$ el $n$-ésimo momento de la variable aleatoria $X$ o $F_{X}(x)$ ($\mu_{n} '$), es
+  \\ $\mu_{n} '=E(X)^n$ 
+  Mientras que el $n$-ésimo momento central de $X$, $\mu_{n} $, es
+  \\ $\mu_{n}=E(X-\mu)$,
+  \\ donde $\mu = \mu_{1} '=E(X)$
+\end{definicion}
+
+El método de momentos a nivel práctico se realiza planteando y resolviendo el siguiente sistema de ecuaciones:
+\[m_1=\frac{1}{n} \sum_{i=1}^{n} X_{i}^{1} \quad \mu_1' =E(X^1) \]
+\[m_2=\frac{1}{n} \sum_{i=1}^{n} X_{i}^{2} \quad \mu_2' =E(X^2) \]
+\[...\]
+\[m_k=\frac{1}{n} \sum_{i=1}^{n} X_{i}^{k} \quad \mu_k' =E(X^k) \]
+
+$\mu_j'$ es una función de $(\theta_1,...,\theta_k)$ el estimador $(\hat{\theta_1},...,\hat{\theta_k})$
+de $(\theta_1,..,\theta_k)$ se obtiene resolviendo para $(\theta_1,...,\theta_k)$ en términos de $(m_1,...,m_k)$
+\[ m_1=\mu_1'(\theta_1,...,\theta_k) \]
+\[ m_2=\mu_2'(\theta_1,...,\theta_k) \]
+\[...\] 
+\[ m_k=\mu_k'(\theta_1,...,\theta_k) \]
+
+La media es el primer momento de centralidad, entendido también como el centro de masa de la distribcuión de probabilidad.
+La varianza de una variable aleatoria X es el segundo momento central, $VarX=E(X-EX)^2$. 
+La raíz cuadrada positiva de $VarX$ es la desviacion estándar de $X$ cuando hablamos de una dsitrubción normal.
+Cuando la media tiende a valores grandes, $X$ es más variable, pero sí $VarX=E(X-EX)^2=0$,
+entonces $X=E(X)$ con probabilidad 1 y por tanto la varianza es 0.
+
+\begin{ejemplo}
+  Revisemos cómo se utiliza el método de momentos para hallar los estimadores de los primeros dos momentos (media y varianza) 
+  en una distribución normal. Así que tomemos $X_1,...,X_n~N(\mu,\sigma^{2})$\\
+  para ello plantemos las ecuaciones 
+  \[m_1=\frac{1}{n}\sum X_i \quad \mu_1'=\mu\]
+  \[m_2=\frac{1}{n}\sum X_i^2 \quad \mu_2'=\mu^2+\sigma^2\]
+  Tendríamos entonces $\frac{1}{n}\sum X_i= \mu$\\
+  $\frac{1}{n}\sum X_i^2-(\frac{1}{n}\sum X_i)^2$\\
+  $\quad = \frac{1}{n}\sum X_i^2-\frac{1}{n^2}\sum X_i^2=\frac{1}{n}(\sum X_i^2-\frac{1}{n}\sum X_i^2)$\\
+  $\quad = \frac{1}{n}\sum X_i^2-\bar{X}^2=\sigma^2$
+\end{ejemplo}
+De aquí se puede apreciar que la fórmula para estimar varianza poblacional y media vienen o pueden estar dadas por el 
+método de momentos, el cual como se ha repetido durante varios conceptos, es fundamental para entender cómo funciona la 
+estadística, más aún, cómo funcionan las ramas adyacentes de esta. De aquí también se pueden intuir propiedades de la varianza
+como que si $X$ es una variable aleatoria con varianza finita, entonces para cualesquiera constantes $a$ y $b$; $Var(aX+b)=a^{2}Var(X)$.\\
+
+Resolver el sistema anterior puede ser demasiado trabajo, y tiene un cierto patrón que se desglozó para desarrollar 
+un concepto muy particular que es la función generatriz de momentos.\\
+
+\begin{definicion}
+  Sea $X$ una variable aleatoria con dpa $F_{X}$. La función genartriz de momentos (fgm) de 
+  $X$ o $F_{X}$, denotada por $M_{X}(t)$, es
+  \[M_{X}(t)=E(e^{tX})\] 
+\end{definicion}
+
+
+\section{Máxima Verosímilitud}
+
+
+
+El rango de MLE es el mismo del parámetro. Pero cabe resoltar que este método posee 3 problemas muy sensibles:
+\begin{itemize}
+  \item Maximización/ Convexidad
+  \item Sensibilidad Númerica
+  \item Solo acepta soluciones únicas
+\end{itemize}
+
+Las específicaciones, trabajo y ejemplos clave de este método fueron omitidos. Muchos detalles importantes 
+algo ignorados ya que hay que tener nociones algo concisas de logartimos, cotas, piatorias, cálculo vectorial, 
+además de una fluidez en el maneho del supremo para saber apreciar sus propiedades.\\
+
+Una de sus mayores virtudes es la invarianza ante tranformaciones. Por ejemplo si $\hat{\theta}$ es MLE de $\theta$,
+entonces $f(\hat{\theta})$ es MLE de $f(\theta)$. Esto también afecta a su varianza así que tiene sus detalles, por ejemplo,
+considermos $\theta = \mu = \frac{1}{n}\sum X_i\Rightarrow \quad \theta^2 = \mu^2 = (\frac{1}{n}\sum X_i)^2$.
+
+MLE $\hat{\theta}$normalmente se obtiene a través de 
+\[ \sum_{i=1}^{n} \frac{\delta ln(L(x_i|\theta))}{\delta \theta}=0 \]
+\[ \frac{\delta^2 ln(L(x_i|\theta))}{\delta \theta}{\delta \theta^2} \hat{\theta}<0 \]
+El ejemplo más clásico 
+
+\begin{ejemplo}
+  Recibes 4 cartas, pero 1 se extravía. Si de las 3 que sí tienes, 2 tienen facutras/recibos y la otra dinero/premio
+  ¿cuál sería un buen estimado del número de facturas de las 4 cartas? \\
+  En este caso hay dos opciones solamente, o 2 son facturas (las que tenemos), o la que perdimos también lo es y deberíamos 
+  tener 3 facturas. Para esto no pensamos en lo probable que fuese recibir una factura o un premio, intentamos pensar desde
+  el enfoque cuál es la probabilidad de cada cosa para perderse. En este caso asumamos que todas tienen la misma probabilidad de 
+  perderse, así tendríamos que\\
+  $\frac{\binom{2}{2} \binom{2}{1}}{\binom{4}{3}}=\frac{1}{2}$ para cuando asumimos que son solo 2 facutras.
+  $\frac{\binom{3}{2} \binom{1}{1}}{\binom{4}{3}}=\frac{3}{4}$ para cuando asumimos que son solo 3 facutras.
+\end{ejemplo}
+  La probabilidad que nos da mayor es si pensamos que hay 3 facturas, esto es porque ya tenemos dos de nuestras tres cartas 
+  como facturas. Por eso, el estimador de máxima verosímilitud sería que hay una probabilidad de $\frac{3}{4}$ de que la otra carta
+  sea una factura. El punto aquí es ver que hay dos posibles estimadores, pero máxima verosímilitud es uno concreto, a partir de un 
+  enfoque concreto. 
+
+
+\section{Bayesiano}
+En nuestra estadística normalmente el parámetro $\theta$, es desconocido, pero es un valor fijo, es cantidad. Observamos variables aleatorias
+y obtenemos información del parámetro $\theta$. El enfoque Bayesiano varía $\theta$ según su distribución (priori) la cuál es subjetiva.
+Se toma un a muestra y actualizamos la distribcuión a posteriori. \\
+Usalmente se denota la priori como $\pi(\theta)$, mientras que muestro es 
+$f(x|\theta)$. Donde se denota $m(x)$ como la probabilidad marginal\\
+$m(x)=\int f(x|\theta)\pi(\theta)d\theta$\\
+Donde la distribución es $\pi(\theta | x)=\frac{f(x|\theta)\pi(\theta)}{m(x)}$\\
+Notése que $\pi(\theta|x)$ depende de haber observado la muestra.
+
+\begin{ejemplo}
+  ---FCFM vs FACPYA---
+\end{ejemplo}
+
+\section{Propiedades de Estimador}
+
+\begin{ejemplo}
+  En una distribución binomial, la media está estimada por $n\theta$, es decir, $E(X)=n\theta$.\\
+  Busquemos probar que $\frac{x}{n}$ es insesgado.\\
+  $E(\frac{x}{n})=\frac{1}{n}E(x)$
+  $\quad =\frac{1}{n}n\theta$
+  $\quad = \theta$, por lo tanto, $\frac{x}{n}$ es insesgado. 
+\end{ejemplo}
+
+Sobre consistencia existe un resultado que dice 
+
+\begin{teorema}
+  Si $\hat{\theta}$ es estimador insesgado de $theta$ y $var(\hat{\theta})\rightarrow 0$ cuando $n\rightarrow \infty$, 
+  entonces $\hat{\theta}$ es estimador consistente de $\theta$.
+\end{teorema}
+
+Se entiendo como que al aumentar la muestra, su varianza se reduzca siendo ya un estimador insesgado. Un estimador que no
+fuera consistente podría no reducir su varianza a pesar de tener más muestra o incluso empeorar su varianza. Suena a contraproducente
+Pero hay estimadores que no cumplen con esto a pesar de que es algo con lo que siempre se busca tener.\\
+Uno de los teoremas más importantes en esta sección que no se habló por ser algo más técnico es el 
+Fisher-Neyman. Resultado importante con rescpecto a mínima varianza, ya que en la discusión al comparar 
+$\frac{Var(\hat{\theta_1})}{Var(\hat{\theta_2})}$ (que es una $\chi^2$).
+
+\begin{definicion}
+  Los cuadrados medios del error (CME) de un estimador $W$ de un parámetro $\theta$, es la función definida como:
+  \[E_\theta(W-\theta)^2 \] 
+\end{definicion}
+Los CME es de los conceptos más importantes de estadística, ya que a partir de aquí se construyen bastantes de los diseños más 
+utilizados en el análisis de varianza e incluso en regresiones. Conceptos semejantes son análogos en campos adyacentes a la 
+estadística. 
+\begin{observacion}
+  Es importante notar que cualquier función creciente de $|W-\theta|$ es una buena medida del $performance$ de la medició,
+  además\\
+  $E_\theta(W-\theta)^{2}=Var_\theta(W)+(E_\theta(W-\theta)^2)^{2}$\\
+  $\quad = Var_\theta(W) + (Bias_\theta (W))^{2}$
+\end{observacion}
+
+Pensemos en $X_1,X_2,...,X_n$ variables aleatorias iid $N(\mu, \sigma^{2})$, donde sabemos que $E(\bar{X})=\mu$ y $E(S^{2})=\sigma^2$ son
+estimadores de media y varianza respectivamente, así que midiendo los CME obtendríamos que\\
+$E(\bar{X}-\mu)^{2}=Var(\bar{X})=\frac{\sigma^{2}}{n}$ que se puede interpretar como que el error en la estimación de la media depende 
+directamente de la varianza de la población y es inversamente proporcional al tamaño de la muesta, a mayor muestra, menor será CME de la
+media estimada.\\
+$E(\bar{X}-\sigma^{2})^{2}=Var(S^2)=\frac{2\sigma^{4}}{n-1}$ el cual tiene una intepretación muy similar al anterior, solo que el error
+crece bastante más por unidad de varianza, así que se requiere muchísima más muestra. De aquí sale la popular expresión de 
+$\frac{n-1}{n} S^{2}$.\\
+Es importante notar que los estimadores no se 'controlan' bajando el sesgo. Si el sesgo bajo, la varianza va a aumentar, lo que 
+aumenta los CME. Esto sirve para ilustrar que las maneras de evaluar un estimador abren el paronoma a un problema vasto como seleccionar
+un estimador, para los cuales se construyen soluciones adecuadas. En el caso concreto de este ejemplo se creo el \textit{Coeficiente de Información}
+como una cota para la mínima varianza del mejor estimador insesgado. Entre mayor sea el número de datos, más 'información' del parámetro 
+tenemos y consecuentemente, una cota mucho más estrecha.\\
+Esta sección generalmente continúa con un análisis detallado de la desigualdad Cramér-Râo, pero es un tema que se deja en reserva para 
+un curso de estadística más formal. Solo es importante notar que es algo de importancia fundamental en la selección y construcción de
+estimadores, que posee generalizaciones para funcionar sin importar de si se trata de un caso discreto o continuo. Además de que es una 
+desigualdad que no necesariamente se satisface.
 
 \chapter{ANOVA}
 
@@ -728,139 +983,7 @@ $\sum a_it_i \quad | \quad \sum a_i=0$. Va muy de la mano con el enfoque unión-
 para diseño de hipótesis que tampoco se curbió. Hay un mundo de detalle en este campo pero no fue
 vital, normalmente con entender el concepto de particionar un conjunto basta.\\
 
-\section{Código}
 
-\begin{lstlisting}[language=Python, caption={Primeros términos de $1/n$}]
-# Calcula los primeros términos de la sucesión
-for n in range(1, 6):
-    print(n, 1 / n)
-\end{lstlisting}
-
-En línea: la función \lstinline[language=Python]|math.sqrt(2)| devuelve $\sqrt2$.
-Para código desde un archivo externo:
-\verb|\lstinputlisting[language=Python]{codigo/ejemplo.py}|.
-
-\section{Tablas}
-
-\subsection{Tabla horizontal (encabezado en la primera fila)}
-
-\begin{table}[H]
-  \centering
-  \caption{Valores de $f(x)=x^2$.}
-  \label{tab:horizontal}
-  \begin{tabular}{@{}lccccc@{}}
-    \toprule
-    $x$    & $-2$ & $-1$ & $0$ & $1$ & $2$ \\
-    \midrule
-    $f(x)$ & $4$  & $1$  & $0$ & $1$ & $4$ \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-\subsection{Tabla vertical (encabezado en la primera columna)}
-
-\begin{table}[H]
-  \centering
-  \caption{Propiedades de los conjuntos numéricos.}
-  \label{tab:vertical}
-  \begin{tabular}{@{}l >{\centering\arraybackslash}p{2.2cm}
-                    >{\centering\arraybackslash}p{2.2cm}
-                    >{\centering\arraybackslash}p{2.2cm}@{}}
-    \toprule
-    \textbf{Propiedad} & $\Q$ & $\R$ & $\C$ \\
-    \midrule
-    Cuerpo           & Sí & Sí & Sí \\
-    Ordenado         & Sí & Sí & No \\
-    Completo         & No & Sí & Sí \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-
-Tabla con texto largo que se ajusta al ancho (\verb|tabularx|):
-
-\begin{table}[H]
-  \centering
-  \begin{tabularx}{\textwidth}{@{}lX@{}}
-    \toprule
-    \textbf{Concepto} & \textbf{Descripción} \\
-    \midrule
-    Cota superior & Número mayor o igual que todos los elementos del conjunto,
-                    que puede o no pertenecer a él. \\
-    Supremo       & La menor de las cotas superiores. \\
-    \bottomrule
-  \end{tabularx}
-\end{table}
-
-Las referencias funcionan igual: ver \cref{tab:horizontal} y \cref{tab:vertical}.
-Para tablas muy largas que cruzan páginas usa \verb|longtable|.
-
-\section{Imágenes}
-
-\begin{figure}[H]
-  \centering
-  % Reemplaza example-image-a por tu archivo, p. ej. grafico.png
-  % (colócalo en la carpeta "figuras")
-  \includegraphics[width=0.45\textwidth]{example-image-a}
-  \caption{Pie de figura.}
-  \label{fig:ejemplo}
-\end{figure}
-
-\Cref{fig:ejemplo} muestra una imagen. También puedes dibujar con TikZ:
-
-\begin{figure}[H]
-  \centering
-  \begin{tikzpicture}[scale=1.2]
-    \draw[->] (-0.3,0) -- (3,0) node[right] {$x$};
-    \draw[->] (0,-0.3) -- (0,2.5) node[above] {$y$};
-    \draw[domain=0:1.55, smooth, thick, blue] plot (\x, {\x*\x});
-  \end{tikzpicture}
-  \caption{Gráfico de $y=x^2$ dibujado con TikZ.}
-  \label{fig:tikz}
-\end{figure}
-
-%% ------------------------------------------------------------
-\chapter{Segundo tema del curso}
-
-\begin{teorema}[Ejemplo de cita cruzada]\label{thm:cruzado}
-  Usando el \cref{thm:unicidad} del \cref{chap:limites-ref}... (cita a otro
-  capítulo con \verb|\cref{chap:...}| tras poner un \verb|\label| en él).
-\end{teorema}
-
-\chapter{Tema con etiqueta}\label{chap:limites-ref}
-
-Texto del capítulo referenciado arriba. Recuerda: ejecuta \texttt{pdflatex}
-dos veces para que las referencias se resuelvan.
-
-%% ============================================================
-\part{Nombre del segundo curso (p.\,ej. Álgebra Lineal)}
-%% ============================================================
-
-\chapter{Espacios vectoriales}
-
-\begin{definicion}[Espacio vectorial]\label{def:ev}
-  Un \termino{espacio vectorial} sobre un cuerpo $\mathbb{K}$ es un conjunto $V$
-  con operaciones suma y producto por escalares que cumplen los axiomas usuales.
-\end{definicion}
-
-\begin{teorema}[Teorema de la dimensión]\label{thm:dim}
-  Sea $T:V\to W$ lineal con $\dim V<\infty$. Entonces
-  \[
-    \dim V = \dim\Ker T + \dim\Img T .
-  \]
-\end{teorema}
-
-\begin{proof}
-  Sea $\{u_1,\dots,u_k\}$ una base de $\Ker T$, que se extiende a una base
-  $\{u_1,\dots,u_k,v_1,\dots,v_m\}$ de $V$. Se prueba que
-  $\{Tv_1,\dots,Tv_m\}$ es base de $\Img T$.
-\end{proof}
-
-\begin{idea}
-  Extender una base del núcleo a una base de todo el espacio.
-\end{idea}
-
-Se usa el \cref{thm:dim} junto con la \cref{def:ev}. Recuerda además que la
-matriz $A=\begin{pmatrix} 1 & 2\\ 3 & 4\end{pmatrix}$ tiene $\rg A=2$.
 
 %% ============================================================
 %%  ÍNDICE ANALÍTICO
